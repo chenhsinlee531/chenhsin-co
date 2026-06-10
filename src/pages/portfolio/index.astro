@@ -6,75 +6,303 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 const contentDir = path.resolve('./src/content/portfolio');
-const projects = fs.readdirSync(contentDir)
-  .filter(f => f.endsWith('.json'))
-  .map(f => ({ default: JSON.parse(fs.readFileSync(path.join(contentDir, f), 'utf8')) }));
+const publicDir = path.resolve('./public');
+
+// Index case-study JSON by slug so card display order is explicit, not
+// dependent on filesystem read order.
+const bySlug = Object.fromEntries(
+  fs.readdirSync(contentDir)
+    .filter(f => f.endsWith('.json'))
+    .map(f => {
+      const data = JSON.parse(fs.readFileSync(path.join(contentDir, f), 'utf8'));
+      return [data.slug, data];
+    })
+);
+
+// Build-time check so a missing image renders a placeholder instead of a
+// broken <img>. The experiment images may not exist yet.
+const imgExists = (src) => !!src && fs.existsSync(path.join(publicDir, src));
+
+// Card copy lives here, not in the JSON, so the case-study detail pages keep
+// their own (longer) subtitles and existing tags.
+const cardCopy = {
+  'kkbox-revamp': {
+    subtitle: 'A homepage redesign turned personalization into a story about knowing the listener.',
+    tags: ['Product Design', 'Personalization', 'ML', 'Growth'],
+  },
+  'play-2026': {
+    subtitle: 'A conference designed as a through-line around AI, creative work, creator tools, gaming, and information trust.',
+    tags: ['Conference Design', 'AI', 'Creator Tools', 'Media'],
+  },
+};
+
+const selectedOrder = ['kkbox-revamp', 'play-2026'];
+const selected = selectedOrder
+  .filter(slug => bySlug[slug])
+  .map(slug => {
+    const p = bySlug[slug];
+    return {
+      slug,
+      title: p.title,
+      date: p.date,
+      coverImage: p.coverImage,
+      hasCover: imgExists(p.coverImage),
+      ...cardCopy[slug],
+    };
+  });
+
+const experiments = [
+  {
+    name: 'Idea Canvas',
+    type: 'Prototype',
+    imageDefault: '/images/ai-experiments/ideacanvas-default.webp',
+    imageHover: '/images/ai-experiments/ideacanvas-hover.webp',
+    alt: 'Spatial idea canvas with clustered notes and Markdown export',
+    description: 'A spatial thinking canvas that helps me collect messy ideas, cluster them by theme, and export them into Markdown for deeper exploration with AI.',
+    explore: 'How AI can help people think more clearly before generating more output.',
+    tags: ['AI workflow', 'Ideation', 'Markdown', 'Thinking tools'],
+  },
+  {
+    name: 'Tone Rewriter',
+    type: 'Workflow',
+    imageDefault: '/images/ai-experiments/tone-default.webp',
+    imageHover: '/images/ai-experiments/tone-hover.webp',
+    alt: 'Writing workflow with tone options for different audiences',
+    description: 'A right-click writing workflow that rewrites selected text by audience and relationship context, including friends, colleagues, and formal settings.',
+    explore: "How AI can support tone, care, and social judgment without flattening someone's voice.",
+    tags: ['Writing UX', 'Tone', 'Context', 'Communication'],
+  },
+  {
+    name: 'Cite / Fair-Trade AI Search',
+    type: 'Product thesis',
+    imageDefault: '/images/ai-experiments/cite-default.webp',
+    imageHover: '/images/ai-experiments/cite-hover.webp',
+    alt: 'AI search attribution and publisher compensation flow',
+    description: 'A product thesis for AI search that pays its sources, exploring retrieval, attribution, content licensing, and creator/publisher compensation.',
+    explore: 'What trustworthy discovery could look like when AI becomes the primary interface to the web.',
+    tags: ['AI search', 'Attribution', 'Retrieval', 'Creator economy'],
+  },
+].map(e => ({ ...e, hasDefault: imgExists(e.imageDefault), hasHover: imgExists(e.imageHover) }));
 ---
 
-<BaseLayout title="Work — ChenHsin Lee" description="Design and product case studies.">
+<BaseLayout title="Work — ChenHsin Lee" description="Selected work and AI experiments around discovery, trust, creativity, and judgment.">
   <PageIntro
     label="Portfolio"
     title="Work"
-    description={"Two projects, two formats. One in streaming, one on the conference stage.\nBoth ask the same question: what story does this actually need to tell?"}
+    description="Selected work and small AI experiments around discovery, trust, creativity, and judgment."
   />
 
-  <section class="project-list section-pad">
+  <!-- Tier 1: Selected Work -->
+  <section class="selected-work">
     <div class="container">
-      {projects.map(({ default: project }, i) => (
-        <article class="project-row reveal" style={`transition-delay: ${i * 120}ms`}>
-          <a href={`/portfolio/${project.slug}`} class="project-row-link">
-            <div class="project-cover">
-              {project.coverImage
-                ? <img src={project.coverImage} alt={project.title} class="project-cover-img" />
-                : <div class="project-cover-placeholder"><span class="project-cover-title">{project.title}</span></div>
-              }
-            </div>
-            <div class="project-meta">
-              <div class="project-meta-top">
-                <div class="project-tags">
-                  {project.tags.map(tag => (
-                    <span class="tag">{tag}</span>
-                  ))}
-                </div>
-                <span class="project-year label">{project.date}</span>
+      <header class="tier-head reveal">
+        <h2 class="section-label">Selected Work</h2>
+        <p class="tier-desc">These are the projects I'm proudest of: one shipped product system, one designed conversation. Both ask what an experience needs to help people notice, trust, or create.</p>
+      </header>
+
+      <div class="selected-grid">
+        {selected.map((project, i) => (
+          <article class="project-card reveal" style={`transition-delay: ${i * 120}ms`}>
+            <a href={`/portfolio/${project.slug}`} class="project-card-link">
+              <div class="project-cover">
+                {project.hasCover
+                  ? <img src={project.coverImage} alt={project.title} class="project-cover-img" />
+                  : <div class="project-cover-placeholder"><span class="project-cover-title">{project.title}</span></div>
+                }
               </div>
-              <h2 class="project-title">{project.title}</h2>
-              <p class="project-subtitle">{project.subtitle}</p>
-              <span class="project-cta">
-                View case study <span class="cta-arrow">→</span>
-              </span>
+              <div class="project-meta">
+                <div class="project-meta-top">
+                  <div class="project-tags">
+                    {project.tags.map(tag => (
+                      <span class="tag">{tag}</span>
+                    ))}
+                  </div>
+                  <span class="project-year label">{project.date}</span>
+                </div>
+                <h3 class="project-title">{project.title}</h3>
+                <p class="project-subtitle">{project.subtitle}</p>
+                <span class="project-cta">
+                  View case study <span class="cta-arrow">→</span>
+                </span>
+              </div>
+            </a>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <div class="container">
+    <hr class="section-divider" />
+  </div>
+
+  <!-- Tier 2: AI Experiments -->
+  <section class="experiments">
+    <div class="container">
+      <header class="tier-head reveal">
+        <h2 class="section-label">AI Experiments</h2>
+        <p class="tier-desc">Small builds, serious questions.</p>
+        <p class="tier-body">These are lightweight prototypes and product theses I built to understand how AI changes everyday thinking, writing, discovery, and creative judgment. They are not polished products. They are product questions made tangible.</p>
+        <p class="tier-note">For the thinking behind these builds, read <a href="/noises-of-ai" class="tier-note-link">Noises of AI</a>.</p>
+      </header>
+
+      <div class="exp-grid">
+        {experiments.map((exp, i) => (
+          <article class="exp-card reveal" style={`transition-delay: ${i * 100}ms`}>
+            <div class="exp-thumb">
+              {exp.hasDefault ? (
+                <Fragment>
+                  <img
+                    src={exp.imageDefault}
+                    alt={exp.alt}
+                    class="exp-thumb-img exp-thumb-default"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  {exp.hasHover && (
+                    <img
+                      src={exp.imageHover}
+                      alt=""
+                      aria-hidden="true"
+                      class="exp-thumb-img exp-thumb-hover"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  )}
+                </Fragment>
+              ) : (
+                <div class="exp-thumb-placeholder"><span class="exp-thumb-title">{exp.name}</span></div>
+              )}
             </div>
-          </a>
-          {i < projects.length - 1 && <hr class="project-divider" />}
-        </article>
+            <span class="exp-type">{exp.type}</span>
+            <h3 class="exp-name">{exp.name}</h3>
+            <p class="exp-desc">{exp.description}</p>
+            <button
+              class="exp-card-open"
+              type="button"
+              aria-haspopup="dialog"
+              aria-controls={`exp-modal-${i}`}
+              aria-label={`Open details for ${exp.name}`}
+            ></button>
+          </article>
+        ))}
+      </div>
+
+      {experiments.map((exp, i) => (
+        <div class="exp-modal" id={`exp-modal-${i}`} role="dialog" aria-modal="true" aria-labelledby={`exp-modal-name-${i}`} aria-hidden="true">
+          <div class="exp-modal-card">
+            <button class="exp-modal-close" type="button" aria-label="Close">×</button>
+            <div class="exp-modal-image">
+              {exp.hasDefault ? (
+                <Fragment>
+                  <img src={exp.imageDefault} alt={exp.alt} class="exp-modal-img exp-modal-img-default" />
+                  {exp.hasHover && (
+                    <img src={exp.imageHover} alt="" aria-hidden="true" class="exp-modal-img exp-modal-img-hover" />
+                  )}
+                </Fragment>
+              ) : (
+                <div class="exp-modal-placeholder"><span class="exp-modal-placeholder-title">{exp.name}</span></div>
+              )}
+            </div>
+            <div class="exp-modal-body">
+              <span class="exp-type">{exp.type}</span>
+              <h3 class="exp-modal-name" id={`exp-modal-name-${i}`}>{exp.name}</h3>
+              <p class="exp-modal-desc">{exp.description}</p>
+              <p class="exp-explore">
+                <span class="exp-explore-label">Built to explore</span>
+                {exp.explore}
+              </p>
+              <div class="exp-tags">
+                {exp.tags.map(tag => (
+                  <span class="tag">{tag}</span>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
       ))}
     </div>
   </section>
 </BaseLayout>
 
 <style>
-  .project-list { background: var(--color-bg); }
-
-  .project-row {
-    margin-bottom: var(--space-6);
+  /* ---------- Section heads ---------- */
+  .tier-head {
+    margin-bottom: var(--space-4);
   }
 
-  .project-row-link {
+  .section-label {
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    font-weight: 700;
+    letter-spacing: var(--tracking-wider);
+    text-transform: uppercase;
+    color: var(--color-text);
+    margin-bottom: var(--space-3);
+  }
+
+  /* Full content width: wrap at the same right edge as the card grid below. */
+  .tier-desc {
+    font-size: var(--text-base);
+    line-height: var(--leading-normal);
+    color: var(--color-text-muted);
+  }
+
+  .tier-body {
+    font-size: var(--text-base);
+    line-height: var(--leading-normal);
+    color: var(--color-text-muted);
+    margin-top: var(--space-2);
+  }
+
+  .tier-note {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    margin-top: var(--space-3);
+  }
+
+  .tier-note-link {
+    color: var(--color-text);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: color var(--duration-fast);
+  }
+
+  .tier-note-link:hover { color: var(--color-accent); }
+
+  /* Hairline section divider between Selected Work and AI Experiments. */
+  .section-divider {
+    border: none;
+    border-top: 1px solid var(--color-border);
+  }
+
+  /* ---------- Selected Work (two-up cards) ---------- */
+  .selected-work {
+    padding-top: var(--space-2);
+    padding-bottom: var(--space-5);
+  }
+
+  .selected-grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: var(--space-4);
+    gap: var(--space-5);
+  }
+
+  @media (min-width: 768px) {
+    .selected-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-5);
+    }
+  }
+
+  .project-card-link {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
     transition: opacity var(--duration-fast);
   }
 
-  .project-row-link:hover { opacity: 0.85; }
-
-  @media (min-width: 768px) {
-    .project-row-link {
-      grid-template-columns: 480px 1fr;
-      gap: var(--space-6);
-      align-items: center;
-    }
-  }
+  .project-card-link:hover { opacity: 0.9; }
 
   .project-cover {
     border-radius: var(--radius-md);
@@ -101,7 +329,7 @@ const projects = fs.readdirSync(contentDir)
 
   .project-cover-title {
     font-family: var(--font-heading);
-    font-size: var(--text-2xl);
+    font-size: var(--text-xl);
     font-style: italic;
     color: rgba(26,26,24,0.12);
     text-align: center;
@@ -138,25 +366,23 @@ const projects = fs.readdirSync(contentDir)
     color: var(--color-text-muted);
   }
 
-  .project-year { 
-    color: var(--color-text-muted); 
-  
+  .project-year {
+    color: var(--color-text-muted);
   }
 
   .project-title {
     font-family: var(--font-heading);
-    font-size: clamp(var(--text-2xl), 3vw, var(--text-3xl));
+    font-size: 1.75rem;
     line-height: var(--leading-tight);
-    letter-spacing: -0.02em;
+    letter-spacing: -0.01em;
     color: var(--color-text);
-    max-width: 30ch; 
   }
 
+  /* Full card width: wrap at the cover image's right edge, not a narrow cap. */
   .project-subtitle {
     font-size: var(--text-base);
     color: var(--color-text-muted);
     line-height: var(--leading-normal);
-    max-width: 48ch;
   }
 
   .project-cta {
@@ -172,15 +398,366 @@ const projects = fs.readdirSync(contentDir)
     transition: gap var(--duration-fast) var(--ease-out);
   }
 
-  .project-row-link:hover .project-cta { gap: 12px; }
-  .project-row-link:hover .cta-arrow { color: var(--color-accent); }
+  .project-card-link:hover .project-cta { gap: 12px; }
+  .project-card-link:hover .cta-arrow { color: var(--color-accent); }
 
   .cta-arrow { transition: color var(--duration-fast); }
 
-  .project-divider {
-    border: none;
-    border-top: 1px solid var(--color-border);
-    margin-top: var(--space-6);
-    margin-bottom: var(--space-6);
+  /* ---------- AI Experiments (three-up, lighter) ---------- */
+  .experiments {
+    padding-top: var(--space-5);
+    padding-bottom: var(--space-7);
+  }
+
+  .exp-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-5);
+  }
+
+  @media (min-width: 768px) {
+    .exp-grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-4);
+    }
+  }
+
+  .exp-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .exp-thumb {
+    position: relative;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    aspect-ratio: 16/10;
+    background: var(--color-bg-card);
+    margin-bottom: var(--space-3);
+  }
+
+  /* contain (not cover) so the full mock is shown without awkward cropping;
+     the card's tan background frames any letterbox gap. */
+  .exp-thumb-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+
+  /* Default image is in flow and reserves the box (with aspect-ratio above),
+     so layout never depends on the hover image loading. */
+  .exp-thumb-default {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Hover image overlays the default, hidden until hover. Absolutely
+     positioned so it adds no layout. If it is missing it simply isn't rendered. */
+  .exp-thumb-hover {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    opacity: 0;
+  }
+
+  /* Crossfade only where there is a real hovering pointer; touch/mobile
+     never reveals the hover image and sees the default only. */
+  @media (hover: hover) and (pointer: fine) {
+    .exp-thumb-hover {
+      transition: opacity 240ms var(--ease-out);
+    }
+
+    .exp-card:hover .exp-thumb-hover {
+      opacity: 1;
+    }
+  }
+
+  .exp-thumb-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--color-bg-card) 0%, var(--color-border) 100%);
+  }
+
+  .exp-thumb-title {
+    font-family: var(--font-heading);
+    font-size: var(--text-xl);
+    font-style: italic;
+    color: rgba(26,26,24,0.12);
+    text-align: center;
+    padding: var(--space-2);
+  }
+
+  .exp-type {
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    letter-spacing: var(--tracking-wider);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-1);
+  }
+
+  .exp-name {
+    font-family: var(--font-heading);
+    font-size: 1.75rem;
+    line-height: var(--leading-tight);
+    letter-spacing: -0.01em;
+    color: var(--color-text);
+    margin-bottom: var(--space-1);
+  }
+
+  /* Match the Selected Work subtitle size (--text-base / 17px). */
+  .exp-desc {
+    font-size: var(--text-base);
+    color: var(--color-text-muted);
+    line-height: var(--leading-normal);
+  }
+
+  /* Explore text matches the description size (--text-base / 17px); the
+     "Built to explore" label below stays the small uppercase kicker. */
+  .exp-explore {
+    font-size: var(--text-base);
+    color: var(--color-text-muted);
+    line-height: var(--leading-normal);
+    margin-top: var(--space-2);
+  }
+
+  .exp-explore-label {
+    display: block;
+    font-size: var(--text-sm);
+    font-weight: 500;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text);
+    margin-bottom: 2px;
+  }
+
+  .exp-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: var(--space-2);
+  }
+
+  /* ---------- Experiment detail modal ---------- */
+  /* Full-cover click target. Transparent, so the card text shows through and
+     hover still bubbles to .exp-card:hover (the crossfade is unchanged). */
+  .exp-card-open {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+  }
+
+  .exp-card-open:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 4px;
+  }
+
+  .exp-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-4);
+    background: rgba(17, 17, 16, 0.6);
+  }
+
+  .exp-modal.active { display: flex; }
+
+  .exp-modal-card {
+    position: relative;
+    width: 100%;
+    max-width: min(1040px, 94vw);
+    max-height: 86vh;
+    overflow: auto;
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: var(--space-5);
+    align-items: center;
+    padding: var(--space-5);
+    background: var(--color-bg);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .exp-modal.active .exp-modal-card {
+      animation: exp-modal-in var(--duration-base) var(--ease-out);
+    }
+  }
+
+  @keyframes exp-modal-in {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* 4:3 frame matches the source images (no side letterbox), and the image
+     column takes the larger share above, so the picture renders large enough
+     to read detail while text stays on the right. */
+  .exp-modal-image {
+    position: relative;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+    background: var(--color-bg-card);
+  }
+
+  .exp-modal-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+
+  /* Default image is in flow (reserves the frame); the hover image overlays it
+     and crossfades in when the image is hovered, mirroring the card thumbnail. */
+  .exp-modal-img-default {
+    position: relative;
+    z-index: 1;
+  }
+
+  .exp-modal-img-hover {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    opacity: 0;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .exp-modal-img-hover {
+      transition: opacity 240ms var(--ease-out);
+    }
+
+    .exp-modal-image:hover .exp-modal-img-hover {
+      opacity: 1;
+    }
+  }
+
+  .exp-modal-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--color-bg-card) 0%, var(--color-border) 100%);
+  }
+
+  .exp-modal-placeholder-title {
+    font-family: var(--font-heading);
+    font-size: var(--text-2xl);
+    font-style: italic;
+    color: rgba(26, 26, 24, 0.12);
+    text-align: center;
+    padding: var(--space-2);
+  }
+
+  .exp-modal-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .exp-modal-name {
+    font-family: var(--font-heading);
+    font-size: var(--text-2xl);
+    line-height: var(--leading-tight);
+    letter-spacing: -0.01em;
+    color: var(--color-text);
+  }
+
+  .exp-modal-desc {
+    font-size: var(--text-base);
+    color: var(--color-text-muted);
+    line-height: var(--leading-normal);
+  }
+
+  .exp-modal-close {
+    position: absolute;
+    top: var(--space-2);
+    right: var(--space-2);
+    z-index: 1;
+    padding: var(--space-1);
+    font-family: var(--font-body);
+    font-size: var(--text-2xl);
+    line-height: 1;
+    color: var(--color-text-muted);
+    background: none;
+    border: 0;
+    cursor: pointer;
+    transition: color var(--duration-fast);
+  }
+
+  .exp-modal-close:hover { color: var(--color-text); }
+
+  @media (max-width: 767px) {
+    .exp-modal-card {
+      grid-template-columns: 1fr;
+      gap: var(--space-4);
+      padding: var(--space-4);
+      align-items: stretch;
+    }
   }
 </style>
+
+<script>
+  const openers = document.querySelectorAll<HTMLButtonElement>('.exp-card-open');
+  const modals = document.querySelectorAll<HTMLElement>('.exp-modal');
+  let lastTrigger: HTMLElement | null = null;
+
+  const openModal = (modal: HTMLElement, trigger: HTMLElement) => {
+    lastTrigger = trigger;
+    modal.classList.add('active');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    modal.querySelector<HTMLButtonElement>('.exp-modal-close')?.focus();
+  };
+
+  const closeModal = (modal: HTMLElement) => {
+    modal.classList.remove('active');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    lastTrigger?.focus();
+    lastTrigger = null;
+  };
+
+  openers.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const id = btn.getAttribute('aria-controls');
+      const modal = id ? document.getElementById(id) : null;
+      if (modal) openModal(modal, btn);
+    });
+  });
+
+  modals.forEach((modal) => {
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal(modal);
+    });
+    modal.querySelector<HTMLButtonElement>('.exp-modal-close')
+      ?.addEventListener('click', () => closeModal(modal));
+    // Minimal focus trap: the close button is the only focusable control inside.
+    modal.addEventListener('keydown', (e) => {
+      if (e.key === 'Tab') {
+        e.preventDefault();
+        modal.querySelector<HTMLButtonElement>('.exp-modal-close')?.focus();
+      }
+    });
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    const open = document.querySelector<HTMLElement>('.exp-modal.active');
+    if (open) closeModal(open);
+  });
+</script>

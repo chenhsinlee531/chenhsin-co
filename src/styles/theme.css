@@ -2,7 +2,7 @@
    THEME — edit this file to restyle the entire site
    ============================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap');
 
 :root {
   /* Colors */
@@ -126,7 +126,7 @@ ul, ol { list-style: none; }
 /* Label style: uppercase tracked small caps */
 .label {
   font-family: var(--font-body);
-  font-size: var(--text-s);
+  font-size: var(--text-sm);
   font-weight: 500;
   letter-spacing: var(--tracking-wider);
   text-transform: uppercase;

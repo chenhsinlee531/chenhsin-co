@@ -20,7 +20,7 @@ const { label, title, description, dark = false } = Astro.props;
 <style>
   .page-intro {
     padding-top: calc(64px + var(--space-7));
-    padding-bottom: var(--space-7);
+    padding-bottom: var(--space-5);
     padding-inline: var(--space-4);
     background: var(--color-bg);
   }
@@ -41,18 +41,18 @@ const { label, title, description, dark = false } = Astro.props;
 
   .page-intro-title {
     font-family: var(--font-heading);
-    font-size: clamp(var(--text-3xl), 6vw, var(--text-5xl));
+    font-size: clamp(var(--text-3xl), 5vw, var(--text-4xl));
     line-height: var(--leading-tight);
     letter-spacing: -0.02em;
     max-width: 14em;
-    margin-bottom: var(--space-4);
+    margin-bottom: var(--space-3);
   }
 
   .page-intro-desc {
-    font-size: var(--text-lg);
+    font-size: var(--text-base);
     line-height: var(--leading-loose);
     color: var(--color-text-muted);
-    max-width: 58ch;
+    max-width: none;
     white-space: pre-line;
   }
 
