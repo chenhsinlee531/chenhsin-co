@@ -4,6 +4,7 @@ import mdx from '@astrojs/mdx';
 import vercel from '@astrojs/vercel';
 
 export default defineConfig({
+  site: 'https://chenhsin.co',
   integrations: [mdx()],
   output: 'server',
   adapter: vercel(),
