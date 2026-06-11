@@ -40,15 +40,15 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <div class="hero-card__inner">
         <div class="hero-card__text">
           <h1 class="hero-headline reveal">
-            Great products have a story inside them.<br />
-            I find it, then make it heard.
+            I build products that help people think, create, and decide better,<br />
+            not just faster.
           </h1>
           <div class="hero-actions reveal reveal-delay-1">
             <a href="/portfolio" class="hero-btn hero-btn--solid">View work</a>
             <a href="/noises-of-ai" class="hero-btn hero-btn--outline">Read Noises of AI</a>
           </div>
           <p class="hero-meta reveal reveal-delay-2">
-            Storyteller who ships · SF / Taipei
+            PM who grows tools for thought · SF / Taipei
           </p>
         </div>
 
@@ -65,13 +65,17 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <div class="about-eyebrow label reveal">About</div>
       <div class="about-body">
         <p class="about-text reveal reveal-delay-1">
-          I work at the intersection of AI, media, and product. The work, in every context, is making what gets built legible to the right people. I've built products for millions and run rooms where an industry talked about its future. What I think about most: how AI reshapes creativity and judgment, and where the line should be.
+          I work on consumer AI products, across personalization, discovery, and trust. I've spent years on the question of how software meets the person behind the screen: what to speed up, what to slow down, what to leave entirely to them. I've built products for 10M+ listeners and run rooms where an industry talked about its future.
+        </p>
+        <p class="about-text reveal reveal-delay-2">
+          What I think about most: how AI reshapes creativity and judgment, and where the line should be. I write about that line, and the thinking behind my builds, in <a href="/noises-of-ai">Noises of AI</a>.
         </p>
         <div class="about-tags reveal reveal-delay-3">
+          <span class="tag">Growth</span>
+          <span class="tag">Consumer AI</span>
+          <span class="tag">Creation & Thinking Tools</span>
           <span class="tag">Discovery & Personalization</span>
           <span class="tag">UX for AI</span>
-          <span class="tag">New Media Strategy</span>
-          <span class="tag">Creative Technology</span>
         </div>
       </div>
     </div>
@@ -95,8 +99,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
               <span class="label label--light">Portfolio</span>
               <span class="preview-arrow">→</span>
             </div>
-            <h2 class="preview-title">Telling a Better Story</h2>
-            <p class="preview-desc">Two projects, two formats. One in streaming, one on the conference stage. Both ask the same question: what story does this actually need to tell?</p>
+            <h2 class="preview-title">The builds</h2>
+            <p class="preview-desc">Selected work and AI experiments around discovery, trust, creativity, and judgment.</p>
             <span class="btn btn--ghost-light preview-btn">View case studies</span>
           </div>
         </a>
@@ -125,7 +129,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   <section class="contact-strip section-pad--sm">
     <div class="container contact-inner">
       <p class="contact-line reveal">
-        Open to conversations about media, AI products, and creative work.
+        Open to conversations about consumer AI, growth, and how people will create and think with agents.
       </p>
       <a href="mailto:chenhsinlee@gmail.com" class="btn btn--primary reveal reveal-delay-1">
         Get in touch
@@ -390,6 +394,18 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     max-width: 60ch;
   }
 
+  .about-text a {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+    transition: opacity 0.2s ease;
+  }
+
+  .about-text a:hover {
+    opacity: 0.7;
+  }
+
   .about-tags {
     display: flex;
     flex-wrap: wrap;
@@ -511,6 +527,5 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   .contact-line {
     font-size: var(--text-lg);
     color: var(--color-text-muted);
-    max-width: 48ch;
   }
 </style>
