@@ -2,7 +2,7 @@
    THEME — edit this file to restyle the entire site
    ============================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@200..800&family=Karla:ital,wght@0,200..800;1,200..800&display=swap');
 
 :root {
   /* Colors */
@@ -19,8 +19,11 @@
   --color-border-dark:  #2A2A28;
 
   /* Typography */
-  --font-heading: 'DM Serif Display', Georgia, serif;
-  --font-body:    'DM Sans', system-ui, sans-serif;
+  --font-heading: 'Manrope', system-ui, sans-serif;
+  --font-body:    'Karla', system-ui, sans-serif;
+  /* Accent face for the wordmark and hero meta line. Single weight (400),
+     with a real italic. Never set a weight other than 400 on this. */
+  --font-accent:  'Instrument Serif', Georgia, serif;
 
   --text-xs:   0.75rem;    /* 12px */
   --text-sm:   0.875rem;   /* 14px */
@@ -92,6 +95,15 @@ body {
   line-height: var(--leading-normal);
   color: var(--color-text);
   background-color: var(--color-bg);
+}
+
+/* Manrope ships 200-800 but no italic. Headings sit at 600: heavier reads
+   wider, and the narrower setting is what this pairing was chosen for. */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  line-height: var(--leading-tight);
+  letter-spacing: -0.025em;
 }
 
 img, video { display: block; max-width: 100%; }

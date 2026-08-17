@@ -311,7 +311,7 @@ const experiments = [
   }
 
   .project-cover-title {
-    font-family: var(--font-heading);
+    font-family: var(--font-accent);
     font-size: var(--text-xl);
     font-style: italic;
     color: rgba(26,26,24,0.12);
@@ -354,8 +354,11 @@ const experiments = [
   }
 
   .project-title {
+    /* 700, not the global 600: at 28px a card title has to hold its own
+       against the cover image and the 700-weight label above it. */
     font-family: var(--font-heading);
-    font-size: 1.75rem;
+    font-weight: 700;
+    font-size: 1.5rem;
     line-height: var(--leading-tight);
     letter-spacing: -0.01em;
     color: var(--color-text);
@@ -467,7 +470,7 @@ const experiments = [
   }
 
   .exp-thumb-title {
-    font-family: var(--font-heading);
+    font-family: var(--font-accent);
     font-size: var(--text-xl);
     font-style: italic;
     color: rgba(26,26,24,0.12);
@@ -487,7 +490,8 @@ const experiments = [
 
   .exp-name {
     font-family: var(--font-heading);
-    font-size: 1.75rem;
+    font-weight: 700;
+    font-size: 1.5rem;
     line-height: var(--leading-tight);
     letter-spacing: -0.01em;
     color: var(--color-text);
@@ -638,7 +642,7 @@ const experiments = [
   }
 
   .exp-modal-placeholder-title {
-    font-family: var(--font-heading);
+    font-family: var(--font-accent);
     font-size: var(--text-2xl);
     font-style: italic;
     color: rgba(26, 26, 24, 0.12);
@@ -654,6 +658,7 @@ const experiments = [
 
   .exp-modal-name {
     font-family: var(--font-heading);
+    font-weight: 700;
     font-size: var(--text-2xl);
     line-height: var(--leading-tight);
     letter-spacing: -0.01em;

@@ -253,9 +253,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
   .hero-headline {
     font-family: var(--font-heading);
-    font-size: clamp(2.25rem, 4.6vw, 3rem);
+    /* Capped at 2.375rem: above 38px Manrope 600 wraps the first sentence
+       to three lines, pushing the headline to four total. */
+    font-size: clamp(2.125rem, 4.6vw, 2.375rem);
     line-height: 1.1;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.035em;
     color: #FAF8F5;
     max-width: 25ch;
   }
@@ -304,11 +306,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   }
 
   .hero-meta {
-    font-size: 1rem;
-    font-weight: 500;
-    letter-spacing: var(--tracking-wider);
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.4);
+    /* Serif, lower case. Tracking stays at 0: the wide setting existed to
+       open up all-caps, and it only scatters lower case. */
+    font-family: var(--font-accent);
+    font-size: 1.3125rem;
+    font-weight: 400;
+    letter-spacing: 0;
+    color: rgba(255,255,255,0.72);
     margin-top: var(--space-2);
   }
 
