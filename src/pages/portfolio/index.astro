@@ -34,22 +34,31 @@ const cardCopy = {
     subtitle: 'A conference designed as a through-line around AI, creative work, creator tools, gaming, and information trust.',
     tags: ['Conference Design', 'AI', 'Creator Tools', 'Media'],
   },
+  'kkbox-cycle': {
+    subtitle: 'A two-week data-driven cycle that let a small squad disprove its own ideas.',
+    tags: ['Growth Experimentation', 'Onboarding', 'Agile Operating Model'],
+  },
 };
 
-const selectedOrder = ['kkbox-revamp', 'play-2026'];
-const selected = selectedOrder
-  .filter(slug => bySlug[slug])
-  .map(slug => {
-    const p = bySlug[slug];
-    return {
-      slug,
-      title: p.title,
-      date: p.date,
-      coverImage: p.coverImage,
-      hasCover: imgExists(p.coverImage),
-      ...cardCopy[slug],
-    };
-  });
+// Sort key: the latest year mentioned in the date string, so "March 2026",
+// "2023 - 2024" and "2021 - 2023" all reduce to 2026 / 2024 / 2023. Ranges
+// sort on when the work ended, which is what "newest" means here.
+const latestYear = (date) => Math.max(0, ...String(date ?? '').match(/\d{4}/g)?.map(Number) ?? []);
+
+// Newest first, left to right. Derived from the dates rather than a hand
+// written list so a new case study lands in the right place on its own.
+const selected = Object.values(bySlug)
+  .sort((a, b) => latestYear(b.date) - latestYear(a.date))
+  .map(p => ({
+    slug: p.slug,
+    title: p.title,
+    date: p.date,
+    coverImage: p.coverImage,
+    hasCover: imgExists(p.coverImage),
+    role: p.role,
+    subtitle: p.subtitle,
+    ...cardCopy[p.slug],
+  }));
 
 const experiments = [
   {
@@ -99,33 +108,19 @@ const experiments = [
         <h2 class="section-label">Selected Work</h2>
       </header>
 
-      <div class="selected-grid">
+      <div class="work-grid">
         {selected.map((project, i) => (
-          <article class="project-card reveal" style={`transition-delay: ${i * 120}ms`}>
-            <a href={`/portfolio/${project.slug}`} class="project-card-link">
-              <div class="project-cover">
-                {project.hasCover
-                  ? <img src={project.coverImage} alt={project.title} class="project-cover-img" />
-                  : <div class="project-cover-placeholder"><span class="project-cover-title">{project.title}</span></div>
-                }
-              </div>
-              <div class="project-meta">
-                <div class="project-meta-top">
-                  <div class="project-tags">
-                    {project.tags.map(tag => (
-                      <span class="tag">{tag}</span>
-                    ))}
-                  </div>
-                  <span class="project-year label">{project.date}</span>
-                </div>
-                <h3 class="project-title">{project.title}</h3>
-                <p class="project-subtitle">{project.subtitle}</p>
-                <span class="project-cta">
-                  View case study <span class="cta-arrow">→</span>
-                </span>
-              </div>
-            </a>
-          </article>
+          <a href={`/portfolio/${project.slug}`} class="work-card reveal" style={`transition-delay: ${i * 100}ms`}>
+            <div class="work-thumb">
+              {project.hasCover
+                ? <img src={project.coverImage} alt="" class="work-thumb-img" loading="lazy" decoding="async" />
+                : <div class="work-thumb-placeholder"><span class="work-thumb-title">{project.title}</span></div>
+              }
+            </div>
+            <span class="work-year">{project.date}</span>
+            <h3 class="work-name">{project.title}</h3>
+            <p class="work-desc">{project.subtitle}</p>
+          </a>
         ))}
       </div>
     </div>
@@ -259,135 +254,42 @@ const experiments = [
     border-top: 1px solid var(--color-border);
   }
 
-  /* ---------- Selected Work (two-up cards) ---------- */
+  /* ---------- Selected Work (expanding table rows) ---------- */
+  /* Rows are collapsed by default and open a cover panel on hover. The row's
+     own height animates, so the rows below are pushed down rather than the
+     panel overlaying them. */
   .selected-work {
     padding-top: var(--space-2);
     padding-bottom: var(--space-5);
   }
 
-  .selected-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-5);
+  /* ---------- Selected Work (three-up, same geometry as Experiments) ----------
+     These cards share the Experiments card rules below; only the
+     link behaviour and the cover treatment differ. */
+  .work-card {
+    text-decoration: none;
+    color: inherit;
   }
 
-  @media (min-width: 768px) {
-    .selected-grid {
-      grid-template-columns: 1fr 1fr;
-      gap: var(--space-5);
-    }
-  }
-
-  .project-card-link {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-3);
-    transition: opacity var(--duration-fast);
-  }
-
-  .project-card-link:hover { opacity: 0.9; }
-
-  .project-cover {
-    border-radius: var(--radius-md);
-    overflow: hidden;
-    aspect-ratio: 16/10;
-    background: var(--color-bg-card);
-  }
-
-  .project-cover-img {
+  /* cover, not contain: these are photographs, so filling the frame reads
+     better than letterboxing them against the card background. */
+  .work-thumb-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
   }
 
-  .project-cover-placeholder {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, var(--color-bg-card) 0%, var(--color-border) 100%);
+  @media (hover: hover) and (pointer: fine) {
+    .work-card:hover .work-name { color: var(--color-accent); }
   }
 
-  .project-cover-title {
-    font-family: var(--font-accent);
-    font-size: var(--text-xl);
-    font-style: italic;
-    color: rgba(26,26,24,0.12);
-    text-align: center;
-    padding: var(--space-2);
+  .work-card:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 6px;
+    border-radius: var(--radius-md);
   }
 
-  .project-meta {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
-  }
-
-  .project-meta-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--space-2);
-  }
-
-  .project-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-  }
-
-  .tag {
-    font-size: var(--text-xs);
-    font-weight: 500;
-    letter-spacing: var(--tracking-wide);
-    text-transform: uppercase;
-    padding: 4px 12px;
-    border-radius: var(--radius-full);
-    border: 1px solid var(--color-border);
-    color: var(--color-text-muted);
-  }
-
-  .project-year {
-    color: var(--color-text-muted);
-  }
-
-  .project-title {
-    /* 700, not the global 600: at 28px a card title has to hold its own
-       against the cover image and the 700-weight label above it. */
-    font-family: var(--font-heading);
-    font-weight: 700;
-    font-size: 1.5rem;
-    line-height: var(--leading-tight);
-    letter-spacing: -0.01em;
-    color: var(--color-text);
-  }
-
-  /* Full card width: wrap at the cover image's right edge, not a narrow cap. */
-  .project-subtitle {
-    font-size: var(--text-base);
-    color: var(--color-text-muted);
-    line-height: var(--leading-normal);
-  }
-
-  .project-cta {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font-size: var(--text-sm);
-    font-weight: 500;
-    letter-spacing: var(--tracking-wide);
-    text-transform: uppercase;
-    color: var(--color-text);
-    margin-top: var(--space-2);
-    transition: gap var(--duration-fast) var(--ease-out);
-  }
-
-  .project-card-link:hover .project-cta { gap: 12px; }
-  .project-card-link:hover .cta-arrow { color: var(--color-accent); }
-
-  .cta-arrow { transition: color var(--duration-fast); }
 
   /* ---------- AI Experiments (three-up, lighter) ---------- */
   .experiments {
@@ -395,26 +297,30 @@ const experiments = [
     padding-bottom: var(--space-7);
   }
 
-  .exp-grid {
+  .exp-grid,
+  .work-grid {
     display: grid;
     grid-template-columns: 1fr;
     gap: var(--space-5);
   }
 
   @media (min-width: 768px) {
-    .exp-grid {
+    .exp-grid,
+    .work-grid {
       grid-template-columns: repeat(3, 1fr);
       gap: var(--space-4);
     }
   }
 
-  .exp-card {
+  .exp-card,
+  .work-card {
     position: relative;
     display: flex;
     flex-direction: column;
   }
 
-  .exp-thumb {
+  .exp-thumb,
+  .work-thumb {
     position: relative;
     border-radius: var(--radius-md);
     overflow: hidden;
@@ -460,7 +366,8 @@ const experiments = [
     }
   }
 
-  .exp-thumb-placeholder {
+  .exp-thumb-placeholder,
+  .work-thumb-placeholder {
     width: 100%;
     height: 100%;
     display: flex;
@@ -469,7 +376,8 @@ const experiments = [
     background: linear-gradient(135deg, var(--color-bg-card) 0%, var(--color-border) 100%);
   }
 
-  .exp-thumb-title {
+  .exp-thumb-title,
+  .work-thumb-title {
     font-family: var(--font-accent);
     font-size: var(--text-xl);
     font-style: italic;
@@ -478,7 +386,8 @@ const experiments = [
     padding: var(--space-2);
   }
 
-  .exp-type {
+  .exp-type,
+  .work-year {
     font-family: var(--font-body);
     font-size: var(--text-sm);
     font-weight: 500;
@@ -488,7 +397,8 @@ const experiments = [
     margin-bottom: var(--space-1);
   }
 
-  .exp-name {
+  .exp-name,
+  .work-name {
     font-family: var(--font-heading);
     font-weight: 700;
     font-size: 1.5rem;
@@ -499,7 +409,8 @@ const experiments = [
   }
 
   /* Match the Selected Work subtitle size (--text-base / 17px). */
-  .exp-desc {
+  .exp-desc,
+  .work-desc {
     font-size: var(--text-base);
     color: var(--color-text-muted);
     line-height: var(--leading-normal);

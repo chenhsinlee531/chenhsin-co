@@ -6,21 +6,45 @@ import PullQuote from '../../components/Portfolio/PullQuote.astro';
 import StatRow from '../../components/Portfolio/StatRow.astro';
 import TestimonialStrip from '../../components/Portfolio/TestimonialStrip.astro';
 import LogoStrip from '../../components/Portfolio/LogoStrip.astro';
+import Lightbox from '../../components/Portfolio/Lightbox.astro';
 
 import fs from 'node:fs';
 import path from 'node:path';
 
 const { slug } = Astro.params;
 const contentDir = path.resolve('./src/content/portfolio');
+const publicDir = path.resolve('./public');
 const files = fs.readdirSync(contentDir).filter(f => f.endsWith('.json'));
 const all = files.map(f => JSON.parse(fs.readFileSync(path.join(contentDir, f), 'utf8')));
 const project = all.find(p => p.slug === slug);
 
 if (!project) return Astro.redirect('/portfolio');
 
+// Build-time check, same as the portfolio index. Image slots are scaffolded in
+// the JSON before the asset exists, so a missing file falls back to a
+// placeholder (cover) or is skipped (media) instead of rendering a broken
+// <img>. It appears on its own once the file lands in /public/images.
+const imgExists = (src: string) => !!src && fs.existsSync(path.join(publicDir, src));
+
+const withExistingImages = (media: any[] = []) =>
+  media
+    .map((m: any) => ({ ...m, images: (m.images ?? []).filter((img: any) => imgExists(img.src)) }))
+    .filter((m: any) => m.images.length > 0 || m.text);
+
+const hasCover = imgExists(project.coverImage);
+
+const sections = project.sections.map((section: any) => ({
+  ...section,
+  media: withExistingImages(section.media),
+  blocks: section.blocks?.map((block: any) => ({
+    ...block,
+    media: withExistingImages(block.media),
+  })),
+}));
+
 // Build scroll nav items
 const navItems: { id: string; label: string }[] = [];
-project.sections.forEach((section: any) => {
+sections.forEach((section: any) => {
   navItems.push({ id: `section-${section.number}`, label: `${section.number} ${section.heading}` });
   if (section.blocks) {
     section.blocks.forEach((block: any) => {
@@ -53,7 +77,7 @@ project.sections.forEach((section: any) => {
       </div>
       <h1 class="cs-title reveal">{project.title}</h1>
       <p class="cs-subtitle reveal reveal-delay-1">{project.subtitle}</p>
-      {(project.role || project.venue || project.markets) && (
+      {(project.role || project.venue || project.market || project.markets) && (
         <div class="cs-details reveal reveal-delay-2">
           {project.role && (
             <div class="cs-detail">
@@ -65,6 +89,12 @@ project.sections.forEach((section: any) => {
             <div class="cs-detail">
               <span class="cs-detail-label label">Venue</span>
               <span class="cs-detail-value">{project.venue}</span>
+            </div>
+          )}
+          {project.market && (
+            <div class="cs-detail">
+              <span class="cs-detail-label label">Market</span>
+              <span class="cs-detail-value">{project.market}</span>
             </div>
           )}
           {project.markets && (
@@ -79,7 +109,10 @@ project.sections.forEach((section: any) => {
 
     {project.coverImage && (
       <div class="cs-cover reveal reveal-delay-2">
-        <img src={project.coverImage} alt={project.title} class="cs-cover-img" />
+        {hasCover
+          ? <img src={project.coverImage} alt={project.title} class="cs-cover-img" />
+          : <div class="cs-cover-placeholder">{project.title}</div>
+        }
       </div>
     )}
   </header>
@@ -94,7 +127,7 @@ project.sections.forEach((section: any) => {
   )}
 
   <!-- Case Study Body Sections -->
-  {project.sections.map((section: any) => (
+  {sections.map((section: any) => (
     <section id={`section-${section.number}`} class={`cs-section ${section.variant === 'dark' ? 'dark-section' : ''}`}>
       <div class="cs-section-inner">
         <SectionHeader
@@ -119,7 +152,7 @@ project.sections.forEach((section: any) => {
               )}
               {block.body && (
                 <div
-                  class={`cs-body-text reveal ${section.variant === 'dark' ? 'cs-body-text--dark' : ''} ${!block.media || block.media.length === 0 ? 'cs-body-text--wide' : ''}`}
+                  class={`cs-body-text reveal ${section.variant === 'dark' ? 'cs-body-text--dark' : ''} ${block.wideText || !block.media || block.media.length === 0 ? 'cs-body-text--wide' : ''}`}
                   set:html={block.body}
                 />
               )}
@@ -130,6 +163,8 @@ project.sections.forEach((section: any) => {
                   text={m.text}
                   dark={section.variant === 'dark'}
                   reversed={m.reversed ?? false}
+                  columns={m.columns}
+                  wide={m.wide}
                 />
               ))}
             </Fragment>
@@ -137,7 +172,7 @@ project.sections.forEach((section: any) => {
         ) : (
           <Fragment>
             <div
-              class={`cs-body-text reveal ${section.variant === 'dark' ? 'cs-body-text--dark' : ''}`}
+              class={`cs-body-text reveal ${section.variant === 'dark' ? 'cs-body-text--dark' : ''} ${section.wideText ? 'cs-body-text--wide' : ''}`}
               set:html={section.body}
             />
             {section.media?.map((block: any) => (
@@ -146,6 +181,8 @@ project.sections.forEach((section: any) => {
                 images={block.images ?? []}
                 text={block.text}
                 dark={section.variant === 'dark'}
+                columns={block.columns}
+                wide={block.wide}
               />
             ))}
           </Fragment>
@@ -163,6 +200,9 @@ project.sections.forEach((section: any) => {
   {project.testimonials?.length > 0 && (
     <TestimonialStrip testimonials={project.testimonials} />
   )}
+
+  <!-- One lightbox per page, shared by every image marked lightbox: true -->
+  <Lightbox />
 
   <!-- Next project nav -->
   <div class="cs-footer section-pad--sm">
@@ -223,7 +263,9 @@ project.sections.forEach((section: any) => {
     line-height: var(--leading-tight);
     letter-spacing: -0.025em;
     margin-bottom: var(--space-3);
-    max-width: 20em;
+    /* 22em, not 20em: the longest case title needs ~20.7em to set on one line,
+       and the header has the room. Still caps the measure on longer titles. */
+    max-width: 22em;
   }
 
   .cs-subtitle {
@@ -271,8 +313,9 @@ project.sections.forEach((section: any) => {
   }
 
   .cs-cover-placeholder {
+    /* .cs-cover has no intrinsic height, so the placeholder sets its own. */
     width: 100%;
-    height: 100%;
+    aspect-ratio: 16 / 9;
     display: flex;
     align-items: center;
     justify-content: center;

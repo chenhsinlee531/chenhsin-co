@@ -1,0 +1,150 @@
+{
+  "slug": "kkbox-cycle",
+  "title": "What We Built When We Could Not Build Much",
+  "subtitle": "A two-week data-driven cycle that let a small squad disprove its own ideas",
+  "role": "Product & Project Lead",
+  "market": "Taiwan; new-user onboarding",
+  "date": "2023 - 2024",
+  "tags": [
+    "Growth Experimentation",
+    "Onboarding",
+    "Agile Operating Model"
+  ],
+  "coverImage": "/images/kkbox-cycle-cover.svg",
+  "sections": [
+    {
+      "number": "01",
+      "heading": "A Wave We Could Track",
+      "variant": "light",
+      "body": "<p>KKBOX needed subscriber growth in Taiwan, and the team had already spent whole projects going after it from the familiar directions. Reduce churn among existing users. Win back the ones who had left. Both moved slowly, and neither moved much.</p><p>Then a telecom partnership put KKBOX inside a carrier's subscription package, and new registrations started arriving in volume from a single, clearly defined channel. We knew exactly when they arrived, through which plan, and what they did next. For a team that had been trying to read small movements in a large existing user base, a clean incoming cohort was the most measurable thing anyone had been handed in years.</p><p>These users also had a property worth building for. They had not compared streaming apps or read a review. KKBOX came with the phone plan. That meant their first session carried unusual weight: nothing before it had given them a reason to stay, so everything depended on what happened inside it.</p><p>Two opportunities sat on top of each other. A real chance to move the subscription number, and a well-defined population to test a new way of working against.</p><p>So we built a small cross-functional squad and gave it one job: run a full loop every two weeks. Propose, evaluate, build, validate, iterate. We called it KKBOX Cycle.</p><p>The loop worked because the lanes overlapped. While one idea was collecting data, the next was already in development, and the analysis from the first fed an optimization rather than blocking the queue.</p><p>So the first work was choosing.</p>",
+      "media": [
+        {
+          "variant": "image-pair",
+          "columns": "3fr 5fr",
+          "images": [
+            {
+              "src": "/images/kkbox-cycle-team.png",
+              "alt": "Squad diagram showing six to eight people across product, engineering, UX, business, and data, circling a loop of ideate, evaluate, build, validate, iterate",
+              "caption": "Six to eight people, five functions, one squad. Six ideas, one per sprint.",
+              "rounded": true
+            },
+            {
+              "src": "/images/kkbox-cycle-lanes.png",
+              "alt": "Lane graph showing experiment ideas running in overlapping two-week lanes, with analysis from one lane feeding the next",
+              "caption": "Ideas ran in overlapping lanes. Analysis from one fed the next round rather than stalling it.",
+              "rounded": true
+            }
+          ]
+        }
+      ],
+      "wideText": true
+    },
+    {
+      "number": "02",
+      "heading": "Choosing the Battle",
+      "variant": "light",
+      "blocks": [
+        {
+          "body": "<p>I worked with our BI analyst to build a decision tree to find the best leverage. It made three cuts in order: which metric actually moves subscriptions, which user segment has room to move it, and which step of their journey carries the most leverage.</p>",
+          "media": [
+            {
+              "variant": "centered",
+              "images": [
+                {
+                  "src": "/images/kkbox-cycle-decision-tree.svg",
+                  "alt": "Decision tree running from the subscription goal down to the ideas that came out of it, with two branches ruled out on data",
+                  "caption": "The full tree, from the subscription goal down to the ideas that came out of it. Two branches were ruled out on data before any ticket was written.",
+                  "rounded": true,
+                  "lightbox": true
+                }
+              ],
+              "wide": true
+            }
+          ],
+          "wideText": true
+        },
+        {
+          "body": "<p><strong>User target: new users</strong></p><p>Three candidates sat under the metric question. Win back users who had already left. Reduce churn among existing users. Or convert the new registrations now arriving through the carrier. Existing-user churn was already stable and low, so the ceiling on improving it was small. Win-back cost too much per recovered user to justify a quarter of squad time. The new arrivals were the only branch where the same effort could still change the number.</p><p><strong>Journey target: activation</strong></p><p>Then we cut the same way one level down, along the new user's journey: sign up, log in, state their preference, play a first song, play more songs, build a library, renew the plan.</p><p>Login was already being worked by marketing and retail. Library-building took multiple sessions and involved too many variables to read cleanly in two weeks. The first song sat in the middle, inside a single session, and it belonged to the product.</p><p><strong>What makes a user convert</strong></p><p>The data made the case. Users who started listening right after their first login retained at meaningfully higher rates. And new users who completed the onboarding preference survey after their first login started listening at rates about 25% higher than those who skipped it.</p><p>Every experiment for the rest of the quarter targeted one moment: the first session. The target we set at kickoff: lift paid retention among new registrants by 5 points.</p>",
+          "wideText": true
+        }
+      ]
+    },
+    {
+      "number": "03",
+      "heading": "Five Ideas in One Quarter",
+      "variant": "dark",
+      "blocks": [
+        {
+          "showInNav": true,
+          "heading": "How the Cycle Ran",
+          "body": "",
+          "media": [
+            {
+              "variant": "left-text-right-image",
+              "images": [
+                {
+                  "src": "/images/kkbox-cycle-five-ideas.png",
+                  "alt": "The five shipped experiments shown in the order they were released",
+                  "caption": "The five that shipped, in the order they went out.",
+                  "rounded": true,
+                  "lightbox": true
+                }
+              ],
+              "text": "<p>Nothing shipped as a feature. Everything shipped as an experiment, which meant two rules did most of the work.</p><p><strong>Anything we picked had to ship inside two weeks, release included.</strong> That constraint chose the ideas for us. Tooltips, prompts, a card placement, one new step in a flow. Nothing that needed a quarter of backend work survived contact with it.</p><p><strong>Every idea carried a written hypothesis, its success metrics, and a counter-metric, all agreed before anyone built it.</strong> The counter-metric was the part that mattered. We named in advance what would tell us the idea was doing damage, so nobody could reinterpret a bad result afterward.</p><p>Tripping a counter-metric did not automatically kill an idea. The rule was: observe the data, check whether a fix exists, then decide whether to continue. The point was to make the decision deliberate rather than optional.</p><p>Then every idea hit the same gate. Once it was live and the data was in, BI and I read the result together and made one call: worth another round, or close it.</p><p>Five ideas shipped in three months: removing the skip button from the preference survey, a popup confirming the personalized playlist was ready, mood-based scenes added to the survey, artist search inside the survey, and intent routing at the end of registration.</p><p>The last one had already been shelved once. We pulled it back and rebuilt it after the first release came back with results showing a segment we had not accounted for.</p>"
+            }
+          ]
+        },
+        {
+          "showInNav": true,
+          "heading": "One Idea, Followed All the Way",
+          "body": "",
+          "media": [
+            {
+              "variant": "left-text-right-image",
+              "images": [
+                {
+                  "src": "/images/kkbox-cycle-tuwyl.png",
+                  "alt": "The mandatory preference survey and the optional intent routing screen shown side by side",
+                  "caption": "Same step, two doors. Mandatory for users who arrived passively, optional for users who came looking for something.",
+                  "rounded": true,
+                  "lightbox": true
+                }
+              ],
+              "text": "<p>TUWYL, Tell Us What You Like, is the step where a new user picks genres and artists. It exists so KKBOX can personalize before there is any listening history to personalize from.</p><p>That 25% gap was correlation, not proof. Users who chose to fill in the survey may simply have been the users who were already going to listen. So we tested the obvious move. We removed the skip button and made it mandatory in the first-login flow.</p><p>For the telecom cohort, it worked. Comparing the quarter after launch against the same cohort a quarter earlier, the share of logged-in users who went on to play music rose about 20%, and the survey became their most common source for that first song. These users had arrived without a reason to explore. Handing them a playlist built from their own answers gave them one.</p><p>For open-market users, running in parallel, almost nothing moved. The completion rate went up, as designed. The activation rate did not follow. These users had chosen KKBOX. They had a song in mind before they finished signing up, and an extra step between them and it was friction, not help.</p><p>The finding sat one level above the feature. The same step carries different weight depending on how someone arrived, and a single onboarding flow was quietly optimizing for the wrong one of them.</p><p>So we split it. The survey stayed mandatory for telecom arrivals. Open-market users got a choice at the end of registration: personalize now, or go straight to search.</p>"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "04",
+      "heading": "What Actually Scaled",
+      "variant": "dark",
+      "body": "<p>The quarter produced two kinds of result.</p><p>The metrics moved. Activation and paid retention both cleared the targets we set at kickoff, inside a single quarter, from a squad of six to eight people.</p><p>The method outlasted the quarter. After the trial round, senior management expanded the Cycle beyond our squad and adopted it as the operating model for other initiatives across the company.</p>",
+      "wideText": true
+    }
+  ],
+  "metrics": [
+    {
+      "value": "+20%",
+      "label": "New user activation",
+      "context": "Share of logged-in telecom-plan users who played music, Q4 vs Q2"
+    },
+    {
+      "value": "+6.2 points",
+      "label": "Paid retention",
+      "context": "Beat the 5-point goal set at kickoff"
+    },
+    {
+      "value": "5 of 6 ideas",
+      "label": "Features shipped",
+      "context": "One per two-week sprint, each measured, then closed or iterated"
+    },
+    {
+      "value": "Adopted company-wide",
+      "label": "Operating model",
+      "context": "Cycle expanded to other initiatives after the trial round"
+    }
+  ],
+  "testimonials": []
+}

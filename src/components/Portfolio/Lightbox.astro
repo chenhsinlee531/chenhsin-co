@@ -1,0 +1,211 @@
+---
+/*
+  Single page-level lightbox for any image marked `.lightbox-trigger`
+  (MediaBlock adds that class when an image sets `lightbox: true`).
+
+  This lives here rather than inside MediaBlock because MediaBlock renders once
+  per media block: emitting the overlay there produced one duplicate id="lightbox"
+  per block, so every getElementById call resolved to the first block's markup.
+  Render this once per page instead.
+*/
+---
+
+<div class="lightbox-overlay" id="lightbox" aria-hidden="true">
+  <button class="lightbox-close" id="lightbox-close" aria-label="Close">×</button>
+  <div class="lightbox-stage" id="lightbox-stage">
+    <img class="lightbox-img" id="lightbox-img" src="" alt="" />
+  </div>
+  <span class="lightbox-hint" id="lightbox-hint" aria-hidden="true"></span>
+</div>
+
+<style>
+  .lightbox-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.88);
+    z-index: 1000;
+  }
+  .lightbox-overlay.active { display: block; }
+
+  /* The stage scrolls once the image is zoomed past the viewport. margin:auto
+     on the image centres it while it still fits and, unlike justify-content,
+     does not clip the leading edge once it does not. */
+  .lightbox-stage {
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    display: flex;
+    scrollbar-width: none;
+  }
+  .lightbox-stage::-webkit-scrollbar { display: none; }
+
+  .lightbox-img {
+    margin: auto;
+    /* Without this the flex algorithm shrinks a zoomed image back down to its
+       intrinsic width, so any zoom past 100% of the file silently does nothing. */
+    flex-shrink: 0;
+    max-width: 90vw;
+    max-height: 90vh;
+    object-fit: contain;
+    border-radius: var(--radius-md);
+    box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+    cursor: zoom-in;
+  }
+
+  /* Zoomed: the script sets an explicit width, so the caps have to come off. */
+  .lightbox-stage.zoomed .lightbox-img {
+    max-width: none;
+    max-height: none;
+    border-radius: 0;
+    cursor: grab;
+  }
+  .lightbox-stage.dragging .lightbox-img { cursor: grabbing; }
+
+  .lightbox-hint {
+    position: absolute;
+    bottom: var(--space-3);
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--font-body);
+    font-size: var(--text-xs);
+    font-weight: 500;
+    letter-spacing: var(--tracking-wider);
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.55);
+    pointer-events: none;
+  }
+
+  .lightbox-close {
+    position: absolute;
+    top: var(--space-3);
+    right: var(--space-3);
+    z-index: 1;
+    color: rgba(255,255,255,0.7);
+    font-size: 2rem;
+    cursor: pointer;
+    line-height: 1;
+    background: none;
+    border: none;
+    padding: var(--space-1);
+    font-family: var(--font-body);
+  }
+  .lightbox-close:hover { color: #fff; }
+</style>
+
+<script>
+  const overlay = document.getElementById('lightbox');
+  const stage = document.getElementById('lightbox-stage');
+  const hint = document.getElementById('lightbox-hint');
+  const lightboxImg = document.getElementById('lightbox-img') as HTMLImageElement | null;
+
+  if (overlay && stage && hint && lightboxImg) {
+    // Multiples of the fitted size, not of the file's own pixel width: the fitted
+    // size is what the viewport allows, so 2x lands near 100% of a 2048px source
+    // and keeps working for an SVG, which has no meaningful native size.
+    const ZOOM_STEPS = [1, 2, 4];
+    let stepIndex = 0;
+    let fitWidth = 0;
+    // Drag-to-pan state. `moved` suppresses the click that ends a drag so
+    // panning never also cycles the zoom.
+    let dragging = false, moved = false;
+    let startX = 0, startY = 0, startLeft = 0, startTop = 0;
+
+    const applyZoom = () => {
+      const factor = ZOOM_STEPS[stepIndex];
+      if (factor === 1) {
+        stage.classList.remove('zoomed');
+        lightboxImg.style.width = '';
+      } else {
+        stage.classList.add('zoomed');
+        lightboxImg.style.width = `${Math.round(fitWidth * factor)}px`;
+      }
+      hint.textContent = factor === 1
+        ? 'Click to zoom'
+        : `${factor}x · drag to pan · click to ${stepIndex === ZOOM_STEPS.length - 1 ? 'reset' : 'zoom in'}`;
+      // Reading scrollWidth forces the pending reflow, so the new size is
+      // already settled here. Deliberately not requestAnimationFrame: that does
+      // not fire while the tab is hidden, which left the viewer in the corner.
+      stage.scrollLeft = (stage.scrollWidth - stage.clientWidth) / 2;
+      stage.scrollTop = (stage.scrollHeight - stage.clientHeight) / 2;
+    };
+
+    const openLightbox = (src: string, alt: string) => {
+      stepIndex = 0;
+      moved = false;
+      lightboxImg.style.width = '';
+      stage.classList.remove('zoomed');
+      lightboxImg.src = src;
+      lightboxImg.alt = alt;
+      overlay.classList.add('active');
+      overlay.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      hint.textContent = 'Click to zoom';
+    };
+
+    document.querySelectorAll<HTMLImageElement>('.lightbox-trigger').forEach(img => {
+      img.addEventListener('click', () => openLightbox(img.dataset.src ?? img.src, img.alt));
+    });
+
+    const closeLightbox = () => {
+      overlay.classList.remove('active');
+      overlay.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      stepIndex = 0;
+      stage.classList.remove('zoomed');
+      lightboxImg.style.width = '';
+    };
+
+    stage.addEventListener('mousedown', (e) => {
+      if (stepIndex === 0) return;
+      dragging = true;
+      moved = false;
+      startX = e.pageX; startY = e.pageY;
+      startLeft = stage.scrollLeft; startTop = stage.scrollTop;
+      stage.classList.add('dragging');
+      e.preventDefault();
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      if (!dragging) return;
+      const dx = e.pageX - startX, dy = e.pageY - startY;
+      if (Math.abs(dx) > 3 || Math.abs(dy) > 3) moved = true;
+      stage.scrollLeft = startLeft - dx;
+      stage.scrollTop = startTop - dy;
+    });
+
+    window.addEventListener('mouseup', () => {
+      if (!dragging) return;
+      dragging = false;
+      stage.classList.remove('dragging');
+      // Cleared on the next tick, after the click that ends this drag has been
+      // swallowed. Without the timeout a drag released off the image leaves the
+      // flag set and eats the following zoom click.
+      setTimeout(() => { moved = false; }, 0);
+    });
+
+    lightboxImg.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (moved) return;
+      // Measure while still fitted. Doing it here rather than on `load` keeps it
+      // independent of decode timing and stays correct after a window resize.
+      if (stepIndex === 0) fitWidth = lightboxImg.getBoundingClientRect().width;
+      stepIndex = (stepIndex + 1) % ZOOM_STEPS.length;
+      applyZoom();
+    });
+
+    // Clicking the surrounding stage, not the image, closes.
+    stage.addEventListener('click', (e) => {
+      if (e.target === stage) closeLightbox();
+    });
+
+    document.getElementById('lightbox-close')?.addEventListener('click', closeLightbox);
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key !== 'Escape' || !overlay.classList.contains('active')) return;
+      // Step back out of zoom first, so Escape does not discard the zoomed view.
+      if (stepIndex !== 0) { stepIndex = 0; applyZoom(); return; }
+      closeLightbox();
+    });
+  }
+</script>

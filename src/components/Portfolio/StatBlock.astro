@@ -6,10 +6,15 @@ interface Props {
 }
 
 const { value, label, context } = Astro.props;
+
+// Most stat values are numeric and carry the display size. A few are short
+// phrases ("Adopted company-wide"), which overflow the grid track at the full
+// stat size, so they render one step down.
+const isPhrase = !/\d/.test(value);
 ---
 
 <div class="stat-block reveal" data-stat-value={value}>
-  <span class="stat-number" data-count-target={value}>{value}</span>
+  <span class={`stat-number ${isPhrase ? 'stat-number--phrase' : ''}`} data-count-target={value}>{value}</span>
   <span class="stat-label">{label}</span>
   {context && <span class="stat-context">{context}</span>}
 </div>
@@ -23,12 +28,22 @@ const { value, label, context } = Astro.props;
 
   .stat-number {
     font-family: var(--font-body);
-    font-size: var(--text-stat);
+    /* Full size on a wide desktop, where the row was designed. Below that a
+       long word in a multi-word value ("+6.2 points") outgrows its grid track
+       at a fixed 5rem, so the whole row scales down together. */
+    font-size: clamp(2.75rem, 5.6vw, var(--text-stat));
     font-weight: 600;
-    line-height: 1;
+    line-height: 1.05;
     letter-spacing: -0.03em;
     color: var(--color-accent);
     display: block;
+    overflow-wrap: break-word;
+  }
+
+  .stat-number--phrase {
+    font-size: clamp(1.75rem, 2.4vw, 2.25rem);
+    line-height: var(--leading-tight);
+    letter-spacing: -0.015em;
   }
 
   .stat-label {

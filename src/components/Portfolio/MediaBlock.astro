@@ -1,13 +1,20 @@
 ---
 interface Props {
-  variant: 'full-bleed' | 'left-text-right-image' | 'right-text-left-image' | 'image-row' | 'centered' | 'stacked-photos' | 'left-text-right-stack' | 'left-text-right-column' | 'featured-grid' | 'photo-reel';
+  variant: 'full-bleed' | 'left-text-right-image' | 'right-text-left-image' | 'image-row' | 'image-pair' | 'centered' | 'stacked-photos' | 'left-text-right-stack' | 'left-text-right-column' | 'featured-grid' | 'photo-reel';
   images?: Array<{ src: string; alt: string; caption?: string; rounded?: boolean }>;
   text?: string;
   dark?: boolean;
   reversed?: boolean;
+  /* image-pair only: grid track sizes, e.g. "3fr 5fr". Weight the columns by
+     the inverse of the images' aspect ratios and the pair renders the same
+     height, so the captions sit on one line. */
+  columns?: string;
+  /* centered only: drop the 100ch reading measure and fill the section width.
+     For dense diagrams, where the cap shrinks the artwork below legibility. */
+  wide?: boolean;
 }
 
-const { variant, images = [], text, dark = false, reversed = false } = Astro.props;
+const { variant, images = [], text, dark = false, reversed = false, columns, wide = false } = Astro.props;
 ---
 
 <div class={`media-block media-block--${variant} ${dark ? 'media-block--dark' : ''} ${reversed ? 'media-block--reversed' : ''} reveal`}>
@@ -45,10 +52,23 @@ const { variant, images = [], text, dark = false, reversed = false } = Astro.pro
     </div>
   )}
 
+  {variant === 'image-pair' && (
+    <div class="media-pair" style={columns ? `--pair-cols: ${columns}` : undefined}>
+      {images.map((img) => (
+        <figure class="media-pair-item">
+          <img src={img.src} alt={img.alt} loading="lazy"
+               class={img.rounded ? 'rounded' : ''} />
+          {img.caption && <figcaption class={`caption label ${img.captionClass || ''}`}>{img.caption}</figcaption>}
+        </figure>
+      ))}
+    </div>
+  )}
+
   {variant === 'centered' && images[0] && (
-    <figure class="media-centered">
+    <figure class={`media-centered ${wide ? 'media-centered--wide' : ''}`}>
       <img src={images[0].src} alt={images[0].alt} loading="lazy"
-           class={`${images[0].rounded ? 'rounded' : ''} ${images[0].class || ''}`} />
+           class={`${images[0].rounded ? 'rounded' : ''} ${images[0].class || ''} ${images[0].lightbox ? 'lightbox-trigger' : ''}`}
+           data-src={images[0].lightbox ? images[0].src : undefined} />
       {images[0].caption && <figcaption class={`caption label ${images[0].captionClass || ''}`}>{images[0].caption}</figcaption>}
     </figure>
   )}
@@ -124,11 +144,6 @@ const { variant, images = [], text, dark = false, reversed = false } = Astro.pro
   )}
 </div>
 
-<div class="lightbox-overlay" id="lightbox" aria-hidden="true">
-  <button class="lightbox-close" id="lightbox-close" aria-label="Close">×</button>
-  <img class="lightbox-img" id="lightbox-img" src="" alt="" />
-</div>
-
 <style>
   .media-block { margin-block: var(--space-5); }
 
@@ -194,6 +209,11 @@ const { variant, images = [], text, dark = false, reversed = false } = Astro.pro
     margin-bottom: 0;
   }
 
+  /* Match .cs-body-text: body emphasis is 600 everywhere, not the browser's 700. */
+  .media-split-text :global(strong) {
+    font-weight: 600;
+  }
+
   .media-block--dark .media-split-text {
     color: var(--color-text-dark);
   }
@@ -219,6 +239,25 @@ const { variant, images = [], text, dark = false, reversed = false } = Astro.pro
     object-fit: contain;
   }
 
+  /* Unequal image pair. Tracks come from --pair-cols so the ratio is authored
+     per block; below the breakpoint the pair stacks. */
+  .media-pair {
+    display: grid;
+    grid-template-columns: var(--pair-cols, 1fr 1fr);
+    gap: var(--space-3);
+    align-items: start;
+  }
+
+  @media (max-width: 767px) {
+    .media-pair { grid-template-columns: 1fr; }
+  }
+
+  .media-pair-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
   /* Centered */
   .media-centered {
     max-width: 100ch;
@@ -226,6 +265,10 @@ const { variant, images = [], text, dark = false, reversed = false } = Astro.pro
   }
 
   .media-centered img { width: 100%; }
+
+  /* 100ch is a reading measure, right for screenshots and wrong for a diagram
+     dense enough that the cap renders its labels illegible. */
+  .media-centered--wide { max-width: none; }
 
   /* Surprise Picks: 80% of original size */
   .surprise-picks-featured {
@@ -468,41 +511,6 @@ const { variant, images = [], text, dark = false, reversed = false } = Astro.pro
   }
   .lightbox-trigger:hover { opacity: 0.85; }
 
-  .lightbox-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.88);
-    z-index: 1000;
-    align-items: center;
-    justify-content: center;
-    cursor: zoom-out;
-  }
-  .lightbox-overlay.active { display: flex; }
-
-  .lightbox-img {
-    max-width: 90vw;
-    max-height: 90vh;
-    object-fit: contain;
-    border-radius: var(--radius-md);
-    box-shadow: 0 30px 80px rgba(0,0,0,0.5);
-    cursor: default;
-  }
-
-  .lightbox-close {
-    position: absolute;
-    top: var(--space-3);
-    right: var(--space-3);
-    color: rgba(255,255,255,0.7);
-    font-size: 2rem;
-    cursor: pointer;
-    line-height: 1;
-    background: none;
-    border: none;
-    padding: var(--space-1);
-    font-family: var(--font-body);
-  }
-  .lightbox-close:hover { color: #fff; }
 </style>
 
 <script>
@@ -550,32 +558,4 @@ const { variant, images = [], text, dark = false, reversed = false } = Astro.pro
     requestAnimationFrame(tick);
   });
 
-  // Lightbox
-  const overlay = document.getElementById('lightbox');
-  const lightboxImg = document.getElementById('lightbox-img') as HTMLImageElement | null;
-
-  document.querySelectorAll<HTMLImageElement>('.lightbox-trigger').forEach(img => {
-    img.addEventListener('click', () => {
-      if (!overlay || !lightboxImg) return;
-      lightboxImg.src = img.dataset.src ?? img.src;
-      lightboxImg.alt = img.alt;
-      overlay.classList.add('active');
-      overlay.setAttribute('aria-hidden', 'false');
-      document.body.style.overflow = 'hidden';
-    });
-  });
-
-  const closeLightbox = () => {
-    overlay?.classList.remove('active');
-    overlay?.setAttribute('aria-hidden', 'true');
-    document.body.style.overflow = '';
-  };
-
-  document.getElementById('lightbox-close')?.addEventListener('click', closeLightbox);
-  overlay?.addEventListener('click', (e) => {
-    if (e.target === overlay) closeLightbox();
-  });
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeLightbox();
-  });
 </script>
