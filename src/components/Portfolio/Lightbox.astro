@@ -103,7 +103,11 @@
     // Multiples of the fitted size, not of the file's own pixel width: the fitted
     // size is what the viewport allows, so 2x lands near 100% of a 2048px source
     // and keeps working for an SVG, which has no meaningful native size.
-    const ZOOM_STEPS = [1, 2, 4];
+    //
+    // Stops at 2x. A third step at 4x asks a retina display for ~41M pixels,
+    // which the vector diagram cannot rasterise smoothly while panning, and it
+    // buys detail that is not legible at that magnification anyway.
+    const ZOOM_STEPS = [1, 2];
     let stepIndex = 0;
     let fitWidth = 0;
     // Drag-to-pan state. `moved` suppresses the click that ends a drag so
