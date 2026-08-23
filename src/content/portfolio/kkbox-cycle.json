@@ -51,7 +51,7 @@
               "variant": "centered",
               "images": [
                 {
-                  "src": "/images/kkbox-cycle-decision-tree.svg",
+                  "src": "/images/kkbox-cycle-decision-tree.png",
                   "alt": "Decision tree running from the subscription goal down to the ideas that came out of it, with two branches ruled out on data",
                   "caption": "The full tree, from the subscription goal down to the ideas that came out of it. Two branches were ruled out on data before any ticket was written.",
                   "rounded": true,
