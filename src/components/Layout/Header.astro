@@ -5,9 +5,13 @@ const nav = [
 ];
 
 const currentPath = Astro.url.pathname;
+
+// The homepage hero is full-bleed dark, so the header rides on top of it
+// transparently and only takes on its own background once you scroll past.
+const isOverlay = currentPath === '/';
 ---
 
-<header class="site-header">
+<header class={`site-header ${isOverlay ? 'site-header--overlay' : ''}`}>
   <div class="header-inner">
     <a href="/" class="wordmark">ChenHsin Lee</a>
 
@@ -57,11 +61,11 @@ const currentPath = Astro.url.pathname;
   }
 
   .wordmark {
-    /* Instrument Serif: single weight 400 with a real drawn italic. */
+    /* Newsreader, italic only: the one serif on the site. */
     font-family: var(--font-accent);
     font-size: 1.4rem;
     font-style: italic;
-    font-weight: 400;
+    font-weight: 500;
     color: var(--color-text-dark);
     letter-spacing: -0.01em;
     flex-shrink: 0;
@@ -116,4 +120,69 @@ const currentPath = Astro.url.pathname;
   @media (max-width: 480px) {
     .nav-list { gap: var(--space-3); }
   }
+
+  /* ── Overlay variant (homepage hero) ──────────── */
+  .site-header--overlay:not(.is-scrolled) {
+    background: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border-bottom-color: transparent;
+  }
+
+  .site-header--overlay .header-inner {
+    height: auto;
+    padding: 40px 72px;
+    transition: padding var(--duration-base) var(--ease-out);
+  }
+
+  .site-header--overlay.is-scrolled .header-inner {
+    padding: 12px var(--space-4);
+  }
+
+  .site-header--overlay .wordmark {
+    font-size: 22px;
+    color: #fff;
+  }
+
+  .site-header--overlay .nav-list {
+    gap: 44px;
+  }
+
+  .site-header--overlay .nav-link,
+  .site-header--overlay .header-cta {
+    font-family: var(--font-heading);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    color: rgba(255,255,255,0.75);
+  }
+
+  .site-header--overlay .nav-link:hover,
+  .site-header--overlay .nav-link--active { color: #fff; }
+
+  .site-header--overlay .header-cta {
+    padding: 11px 24px;
+    border: 1px solid rgba(255,255,255,0.35);
+  }
+
+  .site-header--overlay .header-cta:hover {
+    background: #fff;
+    color: var(--hero-bg);
+    border-color: #fff;
+  }
+
+  @media (max-width: 900px) {
+    .site-header--overlay .header-inner { padding: 24px var(--space-4); }
+    .site-header--overlay .nav-list { gap: var(--space-3); }
+  }
 </style>
+
+<script>
+  // Transparent over the hero, solid once the page scrolls under it.
+  const overlayHeader = document.querySelector('.site-header--overlay');
+  if (overlayHeader) {
+    const sync = () => overlayHeader.classList.toggle('is-scrolled', window.scrollY > 40);
+    sync();
+    window.addEventListener('scroll', sync, { passive: true });
+  }
+</script>

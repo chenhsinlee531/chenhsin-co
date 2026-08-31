@@ -2,7 +2,7 @@
    THEME — edit this file to restyle the entire site
    ============================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@200..800&family=Karla:ital,wght@0,200..800;1,200..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&family=Manrope:wght@200..800&family=Newsreader:ital,opsz,wght@1,6..72,400..600&display=swap');
 
 :root {
   /* Colors */
@@ -21,9 +21,17 @@
   /* Typography */
   --font-heading: 'Manrope', system-ui, sans-serif;
   --font-body:    'Karla', system-ui, sans-serif;
-  /* Accent face for the wordmark and hero meta line. Single weight (400),
-     with a real italic. Never set a weight other than 400 on this. */
-  --font-accent:  'Instrument Serif', Georgia, serif;
+  /* The one serif, always italic: a stand-in for First Round Review's Leif,
+     which is a licensed face. Only the italic is loaded, so never set this
+     upright. */
+  --font-accent:  'Newsreader', Georgia, serif;
+
+  /* Hero palette — the veil resolves to pure black, so the photo is the only
+     colour in the frame. Magenta stays the single accent. */
+  --hero-bg:            #000000;
+  --hero-magenta:       #e07cbf;
+  --hero-magenta-core:  #c9469e;
+  --hero-text-muted:    rgba(255,255,255,0.65);
 
   --text-xs:   0.75rem;    /* 12px */
   --text-sm:   0.875rem;   /* 14px */
@@ -97,8 +105,8 @@ body {
   background-color: var(--color-bg);
 }
 
-/* Manrope ships 200-800 but no italic. Headings sit at 600: heavier reads
-   wider, and the narrower setting is what this pairing was chosen for. */
+/* Manrope ships 200-800 but no italic; every italic on the site is set in the
+   serif instead. Headings sit at 600. */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
   font-weight: 600;
