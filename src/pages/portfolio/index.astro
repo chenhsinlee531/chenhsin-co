@@ -188,9 +188,9 @@ const experiments = [
             <div class="exp-modal-image">
               {exp.hasDefault ? (
                 <Fragment>
-                  <img src={exp.imageDefault} alt={exp.alt} class="exp-modal-img exp-modal-img-default" />
+                  <img src={exp.imageDefault} alt={exp.alt} class="exp-modal-img exp-modal-img-default" loading="lazy" decoding="async" />
                   {exp.hasHover && (
-                    <img src={exp.imageHover} alt="" aria-hidden="true" class="exp-modal-img exp-modal-img-hover" />
+                    <img src={exp.imageHover} alt="" aria-hidden="true" class="exp-modal-img exp-modal-img-hover" loading="lazy" decoding="async" />
                   )}
                 </Fragment>
               ) : (

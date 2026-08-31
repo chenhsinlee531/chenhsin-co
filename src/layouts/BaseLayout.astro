@@ -55,19 +55,28 @@ const ogImageURL = new URL(image, siteUrl).href;
 
     <script>
       // Scroll reveal observer
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add('visible');
-              observer.unobserve(entry.target);
-            }
-          });
-        },
-        { threshold: 0.12 }
-      );
+      const targets = document.querySelectorAll('.reveal');
+      const reveal = (el: Element) => el.classList.add('visible');
 
-      document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        targets.forEach(reveal);
+      } else {
+        // threshold 0, not a fraction of the element: an article body is taller
+        // than the viewport, so asking for 12% of it kept the whole post hidden
+        // until you had scrolled well into it.
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (!entry.isIntersecting) return;
+              reveal(entry.target);
+              observer.unobserve(entry.target);
+            });
+          },
+          { threshold: 0, rootMargin: '0px 0px -40px 0px' }
+        );
+
+        targets.forEach((el) => observer.observe(el));
+      }
     </script>
   </body>
 </html>
