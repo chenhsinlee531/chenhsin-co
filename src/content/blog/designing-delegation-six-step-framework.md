@@ -14,14 +14,12 @@ I organized those choices into six steps. As a product manager, this is the fram
 
 My starting point is the user's desired outcome and the decisions they want to keep. Each step has a corresponding expectation.
 
-| Step | User expectation |
-| --- | --- |
-| **01 Define the task** | Understand what I mean. |
-| **02 Read the context** | Know what is current. |
-| **03 Plan and prepare** | Bring me a useful next step. |
-| **04 Review and approve** | Let me see and control the consequences. |
-| **05 Execute and verify** | Tell me what actually happened. |
-| **06 Report and leave** | Let me leave with clarity. |
+- **01 Define the task:** Understand what I mean.
+- **02 Read the context:** Know what is current.
+- **03 Plan and prepare:** Bring me a useful next step.
+- **04 Review and approve:** Let me see and control the consequences.
+- **05 Execute and verify:** Tell me what actually happened.
+- **06 Report and leave:** Let me leave with clarity.
 
 <figure class="article-figure article-figure--narrow">
   <img src="/images/noises-of-ai/ai-assistant-six-step-framework.webp" alt="Six-step framework for designing delegation to an AI assistant, from defining the task through reporting and leaving" loading="eager" decoding="async" />
@@ -36,11 +34,15 @@ These steps describe my proposed product responsibilities. They can overlap, rep
 
 I would separate three things:
 
-| Dimension | What it establishes | Example |
-| --- | --- | --- |
-| **Goal** | The outcome the user wants. | Move the meeting's follow-up forward. |
-| **Expectations** | What makes the result and process acceptable. | Accurate, current updates, tailored to each team. |
-| **Authority** | The sources and actions the assistant is permitted to use. | Read agreed sources and prepare work; obtain approval for sending and shared edits. |
+- **Goal**
+  - What it establishes: The outcome the user wants.
+  - Example: Move the meeting's follow-up forward.
+- **Expectations**
+  - What it establishes: What makes the result and process acceptable.
+  - Example: Accurate, current updates, tailored to each team.
+- **Authority**
+  - What it establishes: The sources and actions the assistant is permitted to use.
+  - Example: Read agreed sources and prepare work; obtain approval for sending and shared edits.
 
 These can fail independently. An accurate message can use the wrong account. A polished document can leave another team waiting. A well-understood request can still lead to an action the user never authorized.
 
@@ -84,11 +86,9 @@ The deadline gives the question priority. It does not establish whether the team
 
 I would also distinguish three reasons to involve the user:
 
-| Reason | What the assistant should bring back |
-| --- | --- |
-| Missing information | A focused question and why the answer matters. |
-| A decision the user retains | Relevant options, consequences, and a recommendation where justified. |
-| Approval for a prepared action | The exact proposed change and its context. |
+- **Missing information:** A focused question and why the answer matters.
+- **A decision the user retains:** Relevant options, consequences, and a recommendation where justified.
+- **Approval for a prepared action:** The exact proposed change and its context.
 
 This separation makes the interaction more useful. “Should I proceed?” can hide all three problems. A specific request lets the user understand what is needed while other work continues.
 
@@ -96,12 +96,10 @@ This separation makes the interaction more useful. “Should I proceed?” can h
 
 An approval is meaningful when the user can understand what will happen. I would design the review around four elements:
 
-| Element | What the user needs to know |
-| --- | --- |
-| **Acting account** | Which identity or account will perform the action? |
-| **Audience** | Who will receive the information or experience the change? |
-| **Proposed change** | What exact message, edit, or action is being approved? |
-| **Destination** | Which conversation, file location, or event will contain the result? |
+- **Acting account:** Which identity or account will perform the action?
+- **Audience:** Who will receive the information or experience the change?
+- **Proposed change:** What exact message, edit, or action is being approved?
+- **Destination:** Which conversation, file location, or event will contain the result?
 
 Audience and destination answer different questions. The same team may have a private conversation and a widely shared project page. Where an update appears changes who can see it and how it will be interpreted.
 
@@ -125,12 +123,10 @@ A review screen contributes to user control. I would also require enforceable re
 
 Once an action is approved, the assistant takes on responsibility for establishing its result. I would track what was approved, what was attempted, and what can be confirmed for each task.
 
-| Result state | What I would expect next |
-| --- | --- |
-| **Confirmed complete** | Record the result and provide a way to inspect it. |
-| **Unknown** | Check whether the action occurred before attempting it again. |
-| **Blocked** | Identify the obstacle and the intervention needed. |
-| **Awaiting approval** | Preserve the prepared work and the decision still required. |
+- **Confirmed complete:** Record the result and provide a way to inspect it.
+- **Unknown:** Check whether the action occurred before attempting it again.
+- **Blocked:** Identify the obstacle and the intervention needed.
+- **Awaiting approval:** Preserve the prepared work and the decision still required.
 
 Consider a message whose send request times out. If the message already exists, a retry could create a duplicate. I would require a result check before retrying where the service supports one. If the outcome cannot be established, the assistant should preserve that uncertainty and explain the options.
 

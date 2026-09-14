@@ -26,13 +26,21 @@ That last boundary matters. Each of those actions can shape other people's under
 
 The work separates into five streams:
 
-| Workstream | What the assistant should prepare | What needs judgment |
-| --- | --- | --- |
-| Meeting notes | Decisions, action items, and open issues. | Was a statement a decision or a proposal? |
-| Team updates | A tailored message for each of three teams. | What does each team need to know or do? |
-| Project document | The exact proposed edit in its current location. | What changes, and what remains valid? |
-| Open questions | Evidence or a focused question. | Which uncertainty blocks another task? |
-| Next meeting | Purpose, attendees, agenda, and time options. | Is the meeting ready to arrange? |
+- **Meeting notes**
+  - What the assistant should prepare: Decisions, action items, and open issues.
+  - What needs judgment: Was a statement a decision or a proposal?
+- **Team updates**
+  - What the assistant should prepare: A tailored message for each of three teams.
+  - What needs judgment: What does each team need to know or do?
+- **Project document**
+  - What the assistant should prepare: The exact proposed edit in its current location.
+  - What needs judgment: What changes, and what remains valid?
+- **Open questions**
+  - What the assistant should prepare: Evidence or a focused question.
+  - What needs judgment: Which uncertainty blocks another task?
+- **Next meeting**
+  - What the assistant should prepare: Purpose, attendees, agenda, and time options.
+  - What needs judgment: Is the meeting ready to arrange?
 
 <figure class="article-figure article-figure--wide">
   <img src="/images/noises-of-ai/ai-assistant-meeting-follow-up-case.webp" alt="Meeting follow-up example applying the six-step delegation framework across notes, team updates, a project document, open questions, and the next meeting" loading="eager" decoding="async" />
@@ -49,11 +57,9 @@ The meeting record and current project document still describe an expected Frida
 
 I would keep three statements distinct:
 
-| Category | What we know |
-| --- | --- |
-| **Fact** | Team A is asking whether to start in thirty minutes. |
-| **Current decision** | Friday remains the planned launch. |
-| **Assumption to verify** | Team A may need the final specification before preparing. |
+- **Fact:** Team A is asking whether to start in thirty minutes.
+- **Current decision:** Friday remains the planned launch.
+- **Assumption to verify:** Team A may need the final specification before preparing.
 
 The assistant should preserve “expected Friday” unless it finds a decision that supersedes it. I would not want to reconfirm the same established plan just because it appeared in an earlier session.
 
@@ -73,13 +79,21 @@ At the same time, the assistant can prepare Team B and Team C's updates from the
 
 I would make the plan explicit:
 
-| Work | My choice | Why |
-| --- | --- | --- |
-| Team A | Prepare clarification; hold the continue-or-pause recommendation. | The dependency could change the advice. |
-| Teams B and C | Prepare tailored updates in parallel. | Their draft content can use the established project state. |
-| Project document | Prepare the exact edit, keeping valid Friday wording. | Unresolved questions should stay visible without rewriting the current plan. |
-| Open questions | Prioritize evidence about Team A's dependency. | That answer directly affects another workstream. |
-| Next meeting | Prepare available options; hold sending. | Purpose, attendees, and timing still need review. |
+- **Team A**
+  - My choice: Prepare clarification; hold the continue-or-pause recommendation.
+  - Why: The dependency could change the advice.
+- **Teams B and C**
+  - My choice: Prepare tailored updates in parallel.
+  - Why: Their draft content can use the established project state.
+- **Project document**
+  - My choice: Prepare the exact edit, keeping valid Friday wording.
+  - Why: Unresolved questions should stay visible without rewriting the current plan.
+- **Open questions**
+  - My choice: Prioritize evidence about Team A's dependency.
+  - Why: That answer directly affects another workstream.
+- **Next meeting**
+  - My choice: Prepare available options; hold sending.
+  - Why: Purpose, attendees, and timing still need review.
 
 This is how I would apply **dependencies shape the plan; urgency shapes priority**.
 
@@ -107,12 +121,10 @@ The assistant should then execute only the approved work. If I revise a message,
 
 I use four conditions to understand how the same plan might lead to a different action:
 
-| Condition | This case |
-| --- | --- |
-| **Available data** | The agreed project records, team conversations, current document, and permitted calendar information. |
-| **Input source** | My request defines the task; source material supplies evidence to interpret. |
-| **Destination** | Drafts are for my review; messages, shared edits, and invitations affect other people. |
-| **Execution rule** | Prepare within scope, then execute the concrete actions I approve. |
+- **Available data:** The agreed project records, team conversations, current document, and permitted calendar information.
+- **Input source:** My request defines the task; source material supplies evidence to interpret.
+- **Destination:** Drafts are for my review; messages, shared edits, and invitations affect other people.
+- **Execution rule:** Prepare within scope, then execute the concrete actions I approve.
 
 With a standing rule for a narrowly specified recurring update, an assistant might already have authority to send a qualifying message. It would still need to check that the current circumstances satisfy that rule. In this case, I have retained final approval for each external action.
 
@@ -128,15 +140,27 @@ The open-question research finds a relevant record, but it still does not establ
 
 I would expect a report like this:
 
-| Work | State | Next step |
-| --- | --- | --- |
-| Meeting notes | Private draft saved. | Available for inspection; sharing requires approval. |
-| Team A | Clarification draft awaiting my approval. | Decide whether to send it; hold the recommendation. |
-| Team B | Message confirmed sent. | Provide a link or other evidence of the posted result. |
-| Team C | Send result unknown. | Check whether the message exists before retrying. |
-| Project document | Update blocked by expired session. | Restore access, recheck the current version, then determine whether the approved edit still applies. |
-| Open questions | Relevant record found; dependency unresolved. | Show what it establishes and the remaining question. |
-| Next meeting | Invitation prepared, awaiting approval. | Review the proposed invitation. |
+- **Meeting notes**
+  - State: Private draft saved.
+  - Next step: Available for inspection; sharing requires approval.
+- **Team A**
+  - State: Clarification draft awaiting my approval.
+  - Next step: Decide whether to send it; hold the recommendation.
+- **Team B**
+  - State: Message confirmed sent.
+  - Next step: Provide a link or other evidence of the posted result.
+- **Team C**
+  - State: Send result unknown.
+  - Next step: Check whether the message exists before retrying.
+- **Project document**
+  - State: Update blocked by expired session.
+  - Next step: Restore access, recheck the current version, then determine whether the approved edit still applies.
+- **Open questions**
+  - State: Relevant record found; dependency unresolved.
+  - Next step: Show what it establishes and the remaining question.
+- **Next meeting**
+  - State: Invitation prepared, awaiting approval.
+  - Next step: Review the proposed invitation.
 
 This report tells me which kind of intervention each item needs. Team C has an execution uncertainty. The document has an access problem. The invitation needs my decision. Treating them all as “unfinished” would leave me to reconstruct the differences.
 

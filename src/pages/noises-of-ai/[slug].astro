@@ -181,6 +181,14 @@ function formatDate(d: Date) {
     margin-bottom: var(--space-1);
   }
 
+  .post-content :global(li > ul),
+  .post-content :global(li > ol) {
+    margin-top: var(--space-1);
+    margin-bottom: var(--space-2);
+  }
+
+  .post-content :global(li > ul) { list-style: circle; }
+
   .post-content :global(table) {
     width: 100%;
     border-collapse: collapse;

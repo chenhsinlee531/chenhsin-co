@@ -25,11 +25,12 @@ function formatDate(d: Date) {
       {posts.length === 0 ? (
         <p class="empty-state label">Posts coming soon.</p>
       ) : (
-        <div class={`masonry-grid ${posts.length <= 2 ? 'masonry-grid--sparse' : ''}`}>
+        <ul class="post-list">
           {posts.map((post, i) => (
+            <li class="post-item">
             <a
               href={`/noises-of-ai/${post.slug}`}
-              class={`post-card post-card--${post.cardSize ?? 'compact'} reveal`}
+              class="post-card reveal"
               style={`transition-delay: ${i * 80}ms`}
             >
               <div class="post-card-inner">
@@ -55,8 +56,9 @@ function formatDate(d: Date) {
                 <span class="post-read label">Read →</span>
               </div>
             </a>
+            </li>
           ))}
-        </div>
+        </ul>
       )}
     </div>
   </section>
@@ -65,67 +67,52 @@ function formatDate(d: Date) {
 <style>
   .blog-grid-section { background: var(--color-bg); }
 
-  /* Grid: left-to-right, row-by-row */
-  .masonry-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-4);
-    max-width: 2000px;
-    margin-inline: auto;
-    align-items: start;
+  /* List: one article per row */
+  .post-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-width: 1000px;
+    border-top: 1px solid var(--color-border);
   }
 
-  @media (min-width: 640px) {
-    .masonry-grid { grid-template-columns: repeat(2, 1fr); }
-  }
+  .post-item { border-bottom: 1px solid var(--color-border); }
 
-  @media (min-width: 1024px) {
-    .masonry-grid { grid-template-columns: repeat(3, 1fr); }
-  }
-
-  /* Sparse: center single column */
-  .masonry-grid--sparse {
-    grid-template-columns: 1fr;
-    max-width: 600px;
-    margin-inline: auto;
-  }
-
-  .post-card {
-    display: block;
-    break-inside: avoid;
-    margin-bottom: var(--space-3);
-    border-radius: var(--radius-md);
-    border: 1px solid var(--color-border);
-    background: var(--color-bg);
-    transition: border-color var(--duration-fast),
-                transform var(--duration-base) var(--ease-out),
-                box-shadow var(--duration-base) var(--ease-out);
-    min-height: 160px;
-  }
-
-  .post-card:hover {
-    border-color: var(--color-accent);
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-md);
-  }
-
-  .post-card--tall .post-card-inner { padding-bottom: var(--space-6); }
-  .post-card--wide { grid-column: span 1; }
+  .post-card { display: block; }
 
   .post-card-inner {
-    padding: var(--space-5);
-    display: flex;
-    flex-direction: column;
+    padding-block: var(--space-5);
+    display: grid;
+    grid-template-columns: 1fr;
     gap: var(--space-2);
   }
 
   .post-meta {
     display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
+    align-items: center;
     gap: var(--space-2);
     flex-wrap: wrap;
   }
+
+  @media (min-width: 768px) {
+    .post-card-inner {
+      grid-template-columns: 200px 1fr;
+      column-gap: var(--space-5);
+    }
+
+    .post-meta {
+      grid-column: 1;
+      grid-row: 1 / span 3;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .post-title,
+    .post-excerpt,
+    .post-read { grid-column: 2; }
+  }
+
+  .post-card:hover .post-title { color: #7a641d; }
 
   .post-date { 
     color: var(--color-text-muted); 
