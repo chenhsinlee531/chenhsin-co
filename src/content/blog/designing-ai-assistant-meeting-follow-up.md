@@ -1,7 +1,7 @@
 ---
 title: "Designing an AI Assistant for a Meeting Follow-Up"
-date: 2026-09-14T11:00:00Z
-tags: [ai, product, case study]
+date: 2026-08-10
+tags: [productivity, case study]
 cardSize: "wide"
 excerpt: "A meeting follow-up case study showing how I would apply six design steps across five connected workstreams."
 ---
