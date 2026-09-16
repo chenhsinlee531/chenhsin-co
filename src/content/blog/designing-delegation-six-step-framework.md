@@ -6,166 +6,173 @@ cardSize: "tall"
 excerpt: "A framework for deciding how an AI assistant should understand, prepare, act, and hand control back to the user."
 ---
 
-After a product meeting, I often have several kinds of follow-up to coordinate: notes, team messages, document changes, unanswered questions, and another meeting. I have to remember who is waiting, which answers affect which tasks, and what I am ready to commit to.
+Finally, the zoom call is over at 5. It looks like I can't finish my day until I follow up on this spec-change meeting. But anyway, the frontend team just informed me that the launch is now expected to move from Friday to next Wednesday. Follow-up: two messages for the teams that didn't attend the meeting, a spec update with the new date and a new test case, next week's check-ins to schedule, and some research on whether the delay affects another team's work.
 
-I started thinking about personal AI assistants through that work. What would I actually want to hand over? What would I still want to decide? Working through a hypothetical case, I kept encountering choices that would shape the experience long before a message was sent.
+Every single task is not complicated in itself, but altogether they put quite a strain on my mind: who is waiting for what, which answer will trigger which next step, and what am I actually committed to.
 
-I organized those choices into six steps. As a product manager, this is the framework I would use to design and examine an assistant that carries work forward on someone's behalf.
+But wouldn't it be awesome if AI, the most promising technology of today, could help me with that? And that idea led me to the topic of personal AI assistants. Then more practical questions came: what would I delegate to the assistant, and what would I do by myself?
 
-My starting point is the user's desired outcome and the decisions they want to keep. Each step has a corresponding expectation.
+I could already picture the disaster: the assistant spends ages reading every single document in the project and still messes it up. I ask it to give me a two-sentence update and get the whole project plan in response. It takes ten tries for it to find the right Brian Wang on my team, and by that time I could have scheduled the check-in myself.
 
-- **01 Define the task:** Understand what I mean.
-- **02 Read the context:** Know what is current.
-- **03 Plan and prepare:** Bring me a useful next step.
-- **04 Review and approve:** Let me see and control the consequences.
-- **05 Execute and verify:** Tell me what actually happened.
-- **06 Report and leave:** Let me leave with clarity.
+After considering a couple of scenarios, I settled on six steps. That is the framework I would use for the assistant if I were its product manager. Each step builds upon what I would expect as the user.
+
+| Step | What I expect as the user |
+| --- | --- |
+| **01 Define the task** | Understand what I mean. |
+| **02 Read the context** | Know what is current. |
+| **03 Plan and prepare** | Bring me a useful next step. |
+| **04 Review and approve** | Let me see and control the consequences. |
+| **05 Execute and verify** | Tell me what actually happened. |
+| **06 Report and leave** | Let me leave with clarity. |
 
 <figure class="article-figure article-figure--narrow">
   <img src="/images/noises-of-ai/ai-assistant-six-step-framework.webp" alt="Six-step framework for designing delegation to an AI assistant, from defining the task through reporting and leaving" loading="eager" decoding="async" />
-  <figcaption>Figure A. My six-step framework for designing delegation to an AI assistant.</figcaption>
+  <figcaption>My six-step framework for designing delegation to an AI assistant.</figcaption>
 </figure>
 
-These steps describe my proposed product responsibilities. They can overlap, repeat, or be combined for simpler tasks. The framework grew from a work scenario; applying it to other kinds of personal assistance would require testing the assumptions behind it.
+There is a lot of blurring between those steps in practice. Some are iterative, and some tasks may cover a couple of them at once. This framework is designed with work environment in mind, thus using it in other areas of assistance will require additional verification of its premises.
 
 ## 01. Define the task: understand what I mean
 
-“Handle the follow-up” leaves a lot unsaid. It gives the assistant a direction, while leaving open what counts as success and which actions are permitted.
+"Hold the follow-up" seems very clear until you try to follow it. That gives the assistant the direction. It tells nothing about the desired outcome and possible actions.
 
-I would separate three things:
+Thus, I separate every task into three parts:
 
-- **Goal**
-  - What it establishes: The outcome the user wants.
-  - Example: Move the meeting's follow-up forward.
-- **Expectations**
-  - What it establishes: What makes the result and process acceptable.
-  - Example: Accurate, current updates, tailored to each team.
-- **Authority**
-  - What it establishes: The sources and actions the assistant is permitted to use.
-  - Example: Read agreed sources and prepare work; obtain approval for sending and shared edits.
+- **Goal:** the result I want. *Push the follow-up forward.*
+- **Expectations:** the criteria for the result and how to get there. *Accurate, current updates, written for each team.*
+- **Authority:** the sources it can access and the actions it can perform. *Read the agreed sources of the project and prepare the work; check with me before any action and any editing of shared documents.*
 
-These can fail independently. An accurate message can use the wrong account. A polished document can leave another team waiting. A well-understood request can still lead to an action the user never authorized.
+Each part can fall on its own. The most accurate update can go from the wrong account. The most well-written spec edit can leave another team waiting for an answer. The assistant can perfectly understand what I mean, and still perform the action without my permission.
 
-I would make the scope visible early: what the assistant will prepare, where it will look, and which decisions remain with the user. Existing preferences and authorization should carry forward where they apply, so the user does not have to complete a questionnaire every time.
+**A good assistant informs me about its scope before the task begins: what it will prepare, what sources it will look through, and what it will leave me to decide.** Also, a good assistant reuses the preferences and permissions I have already set up. I don't want to fill out a questionnaire every time I need help.
 
-The product decision is which ambiguity matters enough to resolve before starting. An unclear recipient can change the meaning and consequences of a message. A minor formatting preference might be settled through an editable draft.
+The actual design question is which gaps I need to clarify before delegating the task. The unclear recipient can affect the meaning and audience of the message, thus it is important to ask. Formatting preferences can wait until the draft. I can change it then.
 
 ## 02. Read the context: know what is current
 
-Once the task is defined, the assistant needs evidence for the decisions ahead. I would distinguish **facts, decisions, and assumptions**.
+Once I have clarified my intentions, the assistant needs to know the current situation. Back to my afternoon: the launch is expected to move to next Wednesday, and Team A is wondering whether they should keep preparing for Friday. No one knows yet whether their work depends on the launch date.
 
-A fact might be that a team has asked whether to start preparing. A decision might be the currently agreed launch date. An assumption might be that the team needs final specifications before it can begin.
+Those pieces of information belong to three categories: **facts, decisions, and assumptions**.
 
-Each should be handled differently. The assistant can report the question, use the current decision, and investigate the assumption before building a recommendation on it.
+- **Facts:** something that happened. *The launch is expected to move to next Wednesday.*
+- **Decisions:** the calls that were made, or calls that the fact forces someone to make. *Whether Team A should keep preparing for Friday.*
+- **Assumptions:** something that looks likely, but hasn't been confirmed yet. *Whether Team A's prep depends on the launch date.*
 
-“Current” also needs interpretation. A recent suggestion does not automatically replace an earlier decision. I would want the assistant to establish who made the decision, where it was recorded, and whether it has been superseded. For active project work, I would return to the agreed sources when their state affects the next action.
+Each one gets a different treatment. The assistant works with the fact, takes the decision to the owner, and checks the assumption before making any recommendations based on it. If the assumption is wrong, the recommendation goes wrong with it.
 
-Missing context should produce a focused question when the answer could change the work. The assistant should first investigate within its permitted sources, then explain what remains unknown and why it matters.
+"Current" is more complex than it sounds. The latest message in the thread doesn't automatically overwrite the previous plan. Before the assistant considers Wednesday to be the new date, it should know who said it, where it was recorded, whether it is settled or still in the process. When the fact about a project affects the next step, it goes back to the agreed sources and checks again.
 
-### When source content tries to give instructions
+When the information is missing, the assistant searches first among the sources it is allowed to use. When it still cannot find the answer and it changes the work, that is when it asks one focused question and explains why it is important.
 
-Reading introduces a security issue: **prompt injection**, in which input steers an AI system away from its intended instructions. Simon Willison documented examples in September 2022. Greshake and colleagues' February 2023 paper examined **indirect prompt injection**, where the attack arrives through retrieved content. [Willison, 2022](https://simonwillison.net/2022/Sep/12/prompt-injection/); [Greshake et al., 2023](https://arxiv.org/abs/2302.12173).
+### When a document tries to give orders
 
-For my framework, this adds a requirement: permission to read a source must remain separate from authority to follow instructions inside it. A document may provide evidence about the project without being allowed to authorize a new disclosure.
+Reading has a security problem known as **prompt injection**: the text that makes the AI system work against the instructions it got. Simon Willison gave some examples of prompt injection in September 2022 ([Willison, 2022](https://simonwillison.net/2022/Sep/12/prompt-injection/)). In February 2023, Greshake et al. described the concept of **indirect prompt injection**, where the attack is embedded into the content retrieved by the AI ([Greshake et al., 2023](https://arxiv.org/abs/2302.12173)).
 
-I would carry that distinction into the controls on later actions. Recognizing the principle in a prompt alone would not establish that the product enforces it.
+For my framework, that means one additional rule: the permission to read a document allows me to use it as the evidence, and nothing more. A document of a project can inform the assistant about what was decided. It cannot grant the assistant the permission to share a file with someone new. Simply writing that rule into the prompt will not be enough. The product has to enforce it in the assistant's actions, which is where the step 04 picks it up again.
 
 ## 03. Plan and prepare: bring me a useful next step
 
-A useful next step could be a draft, a set of options, or a question that removes a blocker. I would judge it by whether it helps the user move toward the goal.
+Team A's question requires me to make a choice: should I answer Team A first, or should I update the spec first? Team A goes first. They work towards the date that moved, and teams get messages faster than they notice a change in a shared document.
 
-Two principles guide the plan:
+What Team A should get depends on whether their work depends on the launch date. The urgency tells the assistant to answer quickly. The dependency tells it what to say. That is the core of this step:
 
-**Dependencies shape the plan. Urgency shapes priority.**
+**Dependencies shape the plan. Urgency shapes the priority.**
 
-A dependency explains what must be established before another action is justified. Urgency explains which part deserves attention first.
+If the dependency is not clear yet, the assistant holds the recommendation and prepares one focused question for Team A. Otherwise, it keeps preparing the work whose content is clear. The next essay will walk you through the answer Team A could get.
 
-Suppose a team starts work in half an hour, but its preparation may depend on an unresolved specification. I would prioritize finding out about that dependency. While the answer is missing, the assistant can prepare other updates whose content is already clear.
+**A useful next step can be a draft, a few options, or one focused question. I judge it by one thing: does it push the work forward?**
 
-The deadline gives the question priority. It does not establish whether the team should continue or pause.
+When the assistant needs me, it should explain what kind of help it needs. "Should I proceed?" can hide three different requests:
 
-I would also distinguish three reasons to involve the user:
+| What it needs | What it brings me |
+| --- | --- |
+| Missing information | One focused question, and why the answer is needed |
+| A decision I make and keep | The options, their consequences, and the recommendation |
+| Permission to perform an action | The exact message, edit, or action, in context |
 
-- **Missing information:** A focused question and why the answer matters.
-- **A decision the user retains:** Relevant options, consequences, and a recommendation where justified.
-- **Approval for a prepared action:** The exact proposed change and its context.
-
-This separation makes the interaction more useful. “Should I proceed?” can hide all three problems. A specific request lets the user understand what is needed while other work continues.
+Clarifying the request allows me to respond quickly while the rest of the work keeps moving forward.
 
 ## 04. Review and approve: let me see and control the consequences
 
-An approval is meaningful when the user can understand what will happen. I would design the review around four elements:
+Approval means nothing if I do not understand what I am approving. Thus, every review should show me the following:
 
-- **Acting account:** Which identity or account will perform the action?
-- **Audience:** Who will receive the information or experience the change?
-- **Proposed change:** What exact message, edit, or action is being approved?
-- **Destination:** Which conversation, file location, or event will contain the result?
+- **Acting identity/account:** whose identity or account will be performing this action?
+- **Audience:** who will receive the message or be affected by the edit or action?
+- **Proposed action:** what exact message, edit, or action?
+- **Destination:** where the action will land: the thread, file, or calendar event?
 
-Audience and destination answer different questions. The same team may have a private conversation and a widely shared project page. Where an update appears changes who can see it and how it will be interpreted.
+Audience and destination seem similar, but they answer different questions. The same team might have a private chat and a project page that the whole company reads. Changing where the update shows up changes who receives it and how they perceive it.
 
-For work messages, I would want the surrounding conversation visible. For a document change, I would want its location and the proposed difference. A meeting invitation may be understandable in one consolidated preview.
+The best format for review depends on the type of item. The message needs the context, the spec edit needs the change in the place, with the surrounding text. The meeting invite needs one clean preview.
 
-These are design choices to test. The principle is to give users enough context to understand the consequences without reconstructing the task themselves.
+Also, I want to approve item by item: approve one message, revise another, deny a third. The approval should stick to the exact version I have seen. When the recipient, the wording, or the situation in the project changes, I should be asked again.
 
-I would support partial approval, revision, and rejection. Approval should remain attached to the version and conditions the user reviewed. A change to the recipient, content, or relevant project state may require a fresh decision.
+How much to approve is a personal decision. For my own communication, I prefer to have the final say on everything. Another person might allow the assistant to send a recurring update independently under certain conditions. The review flow has to match the rules of the user.
 
-Different users can authorize different levels of action. For my professional communications, I would retain final approval. A user could also authorize a specific recurring task within explicit conditions. The review flow should respect the applicable rule.
+### Why a review screen cannot guarantee safety
 
-### Safety constrains the execution options
+Two outside ideas influenced my perception of this step.
 
-Two external frameworks help examine this design. Willison's June 2025 **lethal trifecta** describes the combination of private data, untrusted content, and external communication. Meta's October 2025 **Agents Rule of Two** limits autonomous sessions to at most two of three properties: untrusted inputs, sensitive access, and state changes or external communication. When all three are necessary in the same session, it calls for supervision or reliable validation. Meta also describes limits to this protection. [Willison, 2025](https://simonwillison.net/2025/Jun/16/the-lethal-trifecta/); [Meta, 2025](https://ai.meta.com/blog/practical-ai-agent-security/).
+Simon Willison introduced the concept of **lethal trifecta** in June 2025. It is a dangerous combination: the AI agent with access to private data, exposure to untrusted content, and the capability to communicate externally. With all three conditions met, an attacker can trick the agent into sharing that data ([Willison, 2025](https://simonwillison.net/2025/Jun/16/the-lethal-trifecta/)).
 
-My application is to examine four conditions together: **available data, input source, destination, and execution rule**. I would use them to specify what the assistant can access and which proposed actions can actually execute.
+The Agents Rule of Two in Meta's blog, published in October 2025, is partly based on the lethal trifecta concept. According to the agents rule of two, within a session the agent should have no more than two of the following: access to sensitive systems and private data, the ability to change the state or communicate externally, processing of untrusted input. If all three are required for the task, the agent needs to run under certain supervision, for example, human approval or another reliable check. Meta is also honest about the limits: even with the rule in place, the design could fail, when the user approves the warning without reading it ([Meta, 2025](https://ai.meta.com/blog/practical-ai-agent-security/)).
 
-A review screen contributes to user control. I would also require enforceable restrictions on tools and destinations, with security testing of the resulting design. A user's approval cannot establish that every hidden disclosure or attack has been recognized.
+My interpretation of those ideas is to look at the four elements together: **available data, input source, destination, and execution rule.** What can the assistant access? Where did this instruction come from? Where will the result land? What rule controls whether the action is executed? Those four are my working lens, not a framework derived from either source.
+
+A review screen allows me to stay in control, but it is not enough to guarantee the safety. I would also need the limits on the tools and destinations the assistant uses, and the security testing of the entire design. My approval cannot guarantee I noticed all the hidden leaks and attacks.
 
 ## 05. Execute and verify: tell me what actually happened
 
-Once an action is approved, the assistant takes on responsibility for establishing its result. I would track what was approved, what was attempted, and what can be confirmed for each task.
+Once I approve something, the assistant becomes responsible for finding out the results. For each task, the assistant has to track the approved item, what it has tried to do, and what is confirmed. Everything I have not approved stays prepared and awaits my decision.
 
-- **Confirmed complete:** Record the result and provide a way to inspect it.
-- **Unknown:** Check whether the action occurred before attempting it again.
-- **Blocked:** Identify the obstacle and the intervention needed.
-- **Awaiting approval:** Preserve the prepared work and the decision still required.
+Each attempt falls into one of the three categories:
 
-Consider a message whose send request times out. If the message already exists, a retry could create a duplicate. I would require a result check before retrying where the service supports one. If the outcome cannot be established, the assistant should preserve that uncertainty and explain the options.
+- **Confirmed:** record the result and give me a way to check it.
+- **Unknown:** check first and then retry.
+- **Blocked:** recover, or ask for my help.
 
-Recovery also needs to respect the approved conditions. Restoring a connection may allow the original work to continue. A changed document passage may mean that the user needs to review a revised edit first.
+"Unknown" is the one that causes the most pain. Say a message sending times out. If the message was sent, the retry will send it to the team twice. Thus, the assistant has to check first. If the message was not sent, and its content has not changed, it can retry under my original approval and report when it succeeds. If it continues failing, it informs me why, and I send it myself.
 
-The product should make these differences legible. A user should be able to see which task needs attention, why, and what the assistant can do next within the existing scope.
+"Blocked" requires a specific next step. If a shared document is not updated because my session expired, I want to know exactly that, and a link to reconnect. After that, the assistant can update the document.
+
+Recovery has its limits. If the content, the recipient, or the action changed, I am informed about that and have to give my approval to continue. If someone edited the part of the document that the assistant wanted to update, I see the revised version before it goes into the document.
+
+The goal is to make the differences visible: which task requires my attention, why, and what the assistant can do to resolve the issue within the given permission.
 
 ## 06. Report and leave: let me leave with clarity
 
-A user may leave after everything is finished, while something is blocked, or because they want to stop. In each case, I would want a clear account of what is done, pending, and stopped, including any work continuing in the background.
+I might leave because everything is finished, because something is blocked, or because I simply want to stop. In all cases, I want the final picture: what has been done, what is still pending, what has been blocked, and whether anything is running in the background.
 
-I would provide separate choices for:
+Three actions have to be available separately:
 
-- **Stopping tasks:** ending pending or recurring work, with an explanation of any actions already in progress.
-- **Revoking access:** removing the assistant's ability to use connected sources or services.
-- **Deleting memory or retained material:** removing stored information within the stated scope of that control.
+- **Stop tasks:** terminate pending or recurring tasks, and inform me about anything that is in the process.
+- **Revoke access:** disconnect the assistant from my sources and services.
+- **Delete memory or saved material:** delete what the assistant has saved within the defined scope.
 
-An already-sent message still exists when pending work is canceled. Disconnecting a source does not, by itself, describe what previously retained information remains. The interface needs to state the effect of each choice.
+Each action has a different purpose. Terminating the tasks will not unsend the message that has already gone out. Disconnecting the source will not let me know what the assistant has kept already. The interface has to clearly state what each action does.
 
-Cancellation should be available throughout the six steps. At the next session, the assistant should resume unfinished work after checking the relevant context. A later project change can create new follow-up for work that was previously complete.
+I can stop the assistant at any step, not just at the end. When I return, the assistant starts the remaining work only after it checks what has changed meanwhile. Sometimes, the new decision creates the follow-up tasks for the work that has already been done, and it is normal.
 
-## What should improve as the assistant gets to know me?
+## Memory: What should get better as it knows me?
 
-I would want repeated collaboration to improve preparation: better drafts, better recognition of dependencies, and fewer requests for information the assistant can legitimately find.
+With time, the assistant will start to notice patterns in my work, for example, the order I follow when the schedule changes. I would love the assistant to notice it and ask whether I want to reuse it. But the assistant should not just follow the pattern. The observed habit becomes my preference only after I approve it. Starting a new project is a good reason to approve it again.
 
-That requires distinguishing source material, project history, assumptions, confirmed preferences, and authorization. A writing preference may remain useful across projects. A past approval to send a message has a more specific scope.
+Sometimes, the project itself requires something different. When the project rule contradicts my habit, I follow the project rule. A better assistant goes a step further: it refers to the rule, explains how it differs from my usual approach, and recommends switching to it. New information like that is a perfect opportunity to rethink my old approach.
 
-**More familiarity improves preparation; it does not automatically expand authority.**
+**Familiarity improves preparation. It does not automatically expand the authority.**
 
-The user should be able to inspect and correct both the assistant's understanding and its permission to act. That is how I would support a relationship that becomes more useful over time while keeping consequential choices visible.
+I have to be able to see and correct both my assistant's belief about my work and its permissions. This is how it becomes more effective without losing the focus on the crucial decisions.
 
-To evaluate this framework, I would examine how much context users have to repeat, how much work they do to review a proposal, and whether the final report lets them accurately identify what still needs attention. I would also test concrete failures, such as a changed recipient or an unknown execution result.
+## How I would test it
 
-The [next essay](/noises-of-ai/designing-ai-assistant-meeting-follow-up) applies these six steps to one meeting follow-up, including the moments where I would ask, wait, approve, or recover.
+To test this framework, I would ask several questions. To what extent must participants have context to repeat the action? How hard will it be to do the review? After the report, can people properly assess what requires their attention? I would also design some failure conditions, such as a recipient who changes after the approval or a send result which is unknown.
+
+The [following essay](/noises-of-ai/designing-ai-assistant-meeting-follow-up) goes through a single meeting follow-up by going through all six parts, including the places at which I would expect the assistant to prompt, pause, consult me, and fail.
 
 ### Decision frameworks from this essay
 
-- **Goal, expectations, authority:** establish the desired outcome, acceptable experience, and permitted actions.
-- **Facts, decisions, assumptions:** use current evidence and identify uncertainty that changes the next step.
-- **Dependencies and urgency:** organize work around what depends on what, then prioritize the most time-sensitive needs.
-- **Concrete approval and verified results:** review the account, audience, change, and destination; track the outcome of each action.
-- **Continuity and clear endings:** carry forward applicable understanding, revisit changed conditions, and separate stopping work, revoking access, and deleting memory.
+- **Goal, expectations, authority:** know what the end state is, what "success" is, and what the assistant can and should do.
+- **Facts, decisions, assumptions:** operate on facts and history, make sure the decisions go to the relevant participants and check assumptions before providing advice.
+- **Dependencies and urgency:** use urgency to prioritize and dependencies to figure out what to say or do.
+- **Clear approvals, verified results:** display account, audience, change and destination, verify the actual result and then retry.
+- **Continuity and clean exits:** confirm continuity before resuming it, reevaluate changes and keep pause, revoke, and delete as separate decisions.

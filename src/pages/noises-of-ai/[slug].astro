@@ -225,6 +225,10 @@ function formatDate(d: Date) {
     width: min(650px, calc(100vw - 64px));
   }
 
+  .post-content :global(.article-figure--medium) {
+    width: min(952px, calc(100vw - 64px));
+  }
+
   .post-content :global(.article-figure--wide) {
     width: min(1180px, calc(100vw - 64px));
   }
@@ -288,6 +292,7 @@ function formatDate(d: Date) {
     }
 
     .post-content :global(.article-figure--narrow),
+    .post-content :global(.article-figure--medium),
     .post-content :global(.article-figure--wide) {
       width: calc(100vw - 32px);
     }
