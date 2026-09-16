@@ -1,7 +1,7 @@
 ---
 title: "AI and the Judgment Problem"
 date: 2025-12-09
-tags: [ai, product, judgment]
+tags: [ux for ai]
 cardSize: "tall"
 excerpt: "The question isn't whether a decision is high-stakes. It's whether the success criteria hold still long enough for an algorithm to learn them."
 ---

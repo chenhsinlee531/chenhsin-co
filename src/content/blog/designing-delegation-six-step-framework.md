@@ -1,7 +1,7 @@
 ---
 title: "How I Would Design a Personal AI Assistant: A Six-Step Framework"
 date: 2026-07-27
-tags: [productivity, design]
+tags: [productivity, product design]
 cardSize: "tall"
 excerpt: "A framework for deciding how an AI assistant should understand, prepare, act, and hand control back to the user."
 ---

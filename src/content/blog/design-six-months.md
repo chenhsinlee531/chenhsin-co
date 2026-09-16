@@ -1,7 +1,7 @@
 ---
 title: "Design for Six Months from Now"
 date: 2026-01-05
-tags: [ai, product, strategy]
+tags: [trend analysis]
 cardSize: "compact"
 excerpt: "Most AI products are designed for today's user with today's model. Both will be different by the time you ship."
 ---

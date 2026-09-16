@@ -1,7 +1,7 @@
 ---
 title: "Curiosity as a design constraint"
 date: 2025-10-15
-tags: [design, ai, product]
+tags: [ux for ai]
 cardSize: "compact"
 excerpt: "Curiosity doesn't come from novelty. It comes from almost recognizing something. That near-miss is a designable moment."
 ---

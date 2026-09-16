@@ -2,7 +2,7 @@
 title: "When People Stop Searching in the Browser"
 date: 2026-08-24
 series: "Noises of AI"
-tags: [agentic browser, search, trend]
+tags: [agentic browser, search, trend analysis]
 excerpt: "Search is leaving the browser. Everything that happens after the search is not. Three companies made three different bets about which half to keep."
 ---
 

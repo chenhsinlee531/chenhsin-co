@@ -1,7 +1,7 @@
 ---
 title: "What Suno and Descript get right that most AI tools don't"
 date: 2025-11-18
-tags: [ai, creative-tools, product]
+tags: [creative tools, ux for ai]
 cardSize: "wide"
 excerpt: "They don't try to replace the creative act. They expand the scope of who can attempt it."
 ---

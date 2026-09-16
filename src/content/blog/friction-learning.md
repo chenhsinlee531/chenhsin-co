@@ -1,7 +1,7 @@
 ---
 title: "The Friction Problem in AI Learning Tools"
 date: 2026-02-10
-tags: [ai, learning, product]
+tags: [productivity, ux for ai]
 cardSize: "wide"
 excerpt: "A friend is building Duolingo for everything. The AI generates the content. The open question is when the tool should make things harder on purpose."
 ---

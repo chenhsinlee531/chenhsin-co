@@ -1,7 +1,7 @@
 ---
 title: "Creation Got Cheap. Discovery Didn't."
 date: 2026-03-26
-tags: [ai, media, product]
+tags: [content discovery, trend analysis]
 cardSize: "tall"
 excerpt: "In streaming, 90% of catalog is never heard. AI creative tools are about to do this to every medium."
 ---
