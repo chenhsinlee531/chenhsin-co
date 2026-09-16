@@ -6,85 +6,77 @@ tags: [agentic browser, search, trend analysis]
 excerpt: "Search is leaving the browser. Everything that happens after the search is not. Three companies made three different bets about which half to keep."
 ---
 
-In May 2025, Apple's Eddy Cue sat in a Washington courtroom and said that searches in Safari had gone down the previous month. He added that it had not happened in twenty-two years, and that the reason was that people were using ChatGPT and Perplexity. Google's stock fell that afternoon.
+In May 2025, Apple's Eddy Cue testified in a Washington courtroom and said that searches in Safari had dropped the previous month. He went on to say that it hadn't happened in twenty-two years, and the cause was people using ChatGPT and Perplexity. Google's shares dropped in that afternoon.
 
-Google pushed back. Its statement said total queries were still growing, including queries coming from Apple's devices and platforms. It did not address Safari specifically.
+Google fought back. Its statement acknowledged growing total queries, as well as queries from Apple's platforms and devices. No reference was made to Safari.
 
-Both statements can be true at the same time. Search is not shrinking. It is separating by purpose.
+Both statements can coexist. Search is not decreasing. It is splitting by purpose.
 
-When I want to understand something, I no longer start in a search field. I ask an assistant, because the thing I want back is a synthesis, not ten links I have to read and reconcile myself. When I want something specific, I still go to the browser. An address. A store's hours. A site I already know the name of. The bank.
+Nowadays if I need to learn something, I no longer start in the search field. I talk to an assistant because what I receive as a response is a synthesis, not ten links I will have to process. If I need something specific, I still go to the browser. An address, store hours, a known site, the bank.
 
-The split is not about which tool is better. It is about how much work I want done before the answer reaches me.
+It is not about the tool that works better. It is about the work put into the answer before it reaches you.
 
-That behaviour has been changing for about two years now, and it has been read mostly as a story about Google losing search. I think it is a story about browsers, and it is more interesting than it looks.
+That user behaviour change has been occurring for about two years now, and it has been understood mostly as the story about Google losing the search. I think it is the story about browsers, and it is more interesting than it appears to be.
 
-## A browser has always done two jobs
+## There are two functions of the browser
 
-The first job is search.
+The first function is search.
 
-The second job is everything that happens after the search. Logging in. Filling the form. Comparing what is in two tabs. Booking the thing. Paying for it. Coming back a week later to check on it. Keeping the password, the receipt, the session, the tab you have not closed since March.
+The second function is everything that happens after the search. Logging in. Filling the form. Comparing two tabs. Booking the thing. Buying it. Checking on it a week later. Storing the password, the receipt, the session, the tab that has been opened since March.
 
-Only the first job is being taken away.
+Only the first function is being stolen.
 
-And it was always the most portable of the two. Nothing about asking a question requires a browser. Search lived there because that was where the web was, not because the two belonged together. Once a model could answer directly, the question had no reason to stay.
+And it was always the most transportable of the two. Nothing in asking a question requires a browser. Search lived in the browser not because they belonged together, but because the web did. Once a model learned to answer the question, it lost the need to live there.
 
-The second job has not moved, and the reason is specific. For software to do something on your behalf, it has to be you. It needs to be logged in as you, holding the session that proves it. Today that identity lives in the browser. There is no other place it is kept.
+The second function has not moved. And the reason is particular. For software to do something on your behalf, it needs to be you. To be logged in as you. To have your session that proves it. Today that identity resides in the browser, and there is no other place for it.
 
-That is the part I keep coming back to. Answers can leave because an answer only needs a model and an index. Actions stay because an action needs your identity, and your identity is still sitting in the browser.
+That is the point that I am returning to constantly. The answers can leave because an answer only requires a model and an index. Actions remain because an action requires your identity, and it is still residing in the browser.
 
-Over the past year, three companies have made very different bets about what to do with that. None of them agree on the strategy. All of them are acting as though the two jobs have already come apart.
+During the last year, three companies took quite different bets on how to deal with the reality. The strategies differ, and all three act like the two functions have already separated.
 
-## OpenAI kept the answers and let the shell go
+## OpenAI let go of the shell and kept the answers
 
-ChatGPT Atlas launched on 21 October 2025. It was macOS only. It stopped working on 9 August 2026, 292 days later. It never shipped on Windows or mobile.
+ChatGPT Atlas was released on 21 October 2025. It was available only on macOS. It stopped working on 9 August 2026, 292 days later. It was never shipped for Windows or mobile platforms.
 
-OpenAI's explanation was that browser-based agentic capability was moving into ChatGPT and Codex, and that the lighter parts would live on as a Chrome extension and inside the ChatGPT desktop app. The line from the shutdown note that got quoted everywhere was that an AI browser should be a feature, not a destination.
+According to OpenAI, browser-based, agentic capabilities were moving to ChatGPT and Codex, while the lightweight components were left as a Chrome extension and part of the ChatGPT desktop application. The message in which Atlas was shut down was quoted widely, saying that an AI browser should be a feature, not a destination. OpenAI continues developing software that acts on the web. What it ceased to do was developing its own browser to perform it in. The answers remained in ChatGPT, where OpenAI has its users. The actions happen inside a browser that someone else maintains.
 
-It is worth being precise about what was abandoned. OpenAI is still building software that acts on the web. What it stopped doing was maintaining its own browser to do it in. The answers stay in ChatGPT, where OpenAI already has the users. The acting happens inside a browser that someone else pays to maintain.
+## Apple developed a product for each side of the split
 
-## Apple put a product on each side of the split
+At WWDC in June 2026, Apple introduced Siri AI, a newly rebuilt assistant able to conduct multi-turn conversations, read from your screen, and pull current information from the web. What matters here is that Siri AI is shipped as a separate standalone application, whose conversation history persists and syncs through iCloud. On the Mac it is in Spotlight. On the iPhone it lives in Dynamic Island.
 
-At WWDC in June 2026, Apple introduced Siri AI, a rebuilt assistant that holds multi-turn conversations, reads what is on your screen, and pulls current information from the web. The detail that matters most is that it comes with its own standalone app, with conversation history that persists and syncs through iCloud. On the Mac it also sits in Spotlight. On the iPhone it lives in the Dynamic Island.
+The old Siri would answer and fade away. The new one is a place you will return to. That is the structure of a chat assistant, and it puts Siri in the same spot on the phone as ChatGPT, Claude, and Gemini. Apple developed the underlying models in cooperation with Google, using Gemini technologies for the next generation of its foundation models, while retaining the ownership of the models and the privacy architecture.
 
-Old Siri answered and disappeared. The new one is a place you go back to. That is the shape of a chat assistant, and it puts Siri in the same position on the phone that ChatGPT, Claude and Gemini already occupy. Apple built the underlying models with Google, using Gemini technologies for the next generation of its foundation models, while keeping the models and the privacy architecture its own.
+Also, in the same keynote, Safari received three new features.
 
-In the same keynote, Safari got three new things.
+Automatic Tab Groups, organizing open tabs by topic. Notify Me, watching the page and notifying you if it changes. Describe an Extension, allowing you to generate a Safari extension simply by describing what it should do. Tab management. Page monitoring. Extensions creating. All of them appear after the search, while the search field remains untouched.
 
-Automatic Tab Groups, which sorts open tabs into topics. Notify Me, which watches a page and tells you when it changes. Describe an Extension, which lets you generate a Safari extension by describing what you want it to do.
+From my perspective, Apple saw the same behaviour as Cue described in the courtroom, and instead of defending the search field, it shipped a product for each side. Asking a question moved to Siri AI, which competes for the query directly. Everything after that stay in Safari, where logins and sessions are already kept.
 
-Tab management. Monitoring. Extending. All three sit after the search. The search field itself was not touched.
+## But another company took a different bet
 
-I want to be clear that this is my reading and not something Apple has said. But the pattern is legible enough. Apple watched the same behaviour split that Cue described in court, and rather than defending the search field, it shipped a product on each side. The asking goes to Siri AI, where it can compete for the query directly. Everything after the asking stays in Safari, which is where the logins and the sessions already are.
+Polar was released at the end of July 2026, developed by a startup called Recursive Intelligence. Before Polar, the company released an AI assistant named Composer. In May they scrapped it and started working on a browser.
 
-## Then a company went the other way
+Polar is a Chromium-based browser available only on macOS. The project raised $5.7 million in its seed round, led by Madrona. Kevin Jiang, Polar's CEO, worked for a year at Perplexity developing Comet before founding his own rival.
 
-Polar launched at the end of July 2026, built by a startup called Recursive Intelligence. Before Polar, the company's product was an AI agent called Composer. In May they dropped it and built a browser instead.
+What Polar does is limited. It does not summarize pages or give answers. It clicks, types, and navigates inside websites where you are already logged in, and it keeps going: the company reported that the users executed more than 4.5 million actions across the web in seven months, some of the tasks running for more than fifteen hours without human supervision.
 
-The browser is Chromium based and macOS only. It raised a $5.7 million seed round led by Madrona. Its CEO, Kevin Jiang, spent a year at Perplexity working on Comet before leaving to build a competitor.
+An assistant turned into a browser in the same year a browser turned into a feature inside an assistant. The two products took opposite paths and came to the same conclusion about where the work happens.
 
-What it does is narrow. It does not summarise pages or answer questions. It clicks, types, and navigates inside websites where you are already signed in, and it keeps going: the company says users ran more than 4.5 million actions across the web in seven months, and that some tasks have run for over fifteen hours without a person watching.
+## What can be observed in the positioning of Polar
 
-An assistant became a browser in the same year a browser became a feature inside an assistant. The two products moved in opposite directions and arrived at the same conclusion about where the work happens.
+**They targeted a narrow audience.** Polar is designed for people who work in sales, recruiting, marketing, research, and operations. Jiang explains it by the frequency of tasks. Ordinary consumers do not book a flight or make a reservation every week, so there is not enough pull for them to switch browsers. If acting on your behalf makes sense only if you are actively using professional work, that is not a mass feature. That is a work tool that just happens to look like a browser.
 
-Looking at how Polar is positioned, two things read as deliberate choices and two read as costs that came with the choice.
+**They did not want to become your browser.** Most Polar users keep their regular browser as the default one and open Polar when they need to automate something. That is a true finding, and it is not a browser war. It describes people maintaining their daily browser and a work robot next to it. If the pattern persists, the important question becomes not which browser wins but how many browsers people are ready to maintain.
 
-**They chose a narrow audience.** Polar is for people in sales, recruiting, marketing, research and operations. Jiang's stated reason is frequency: ordinary consumers do not book a flight or make a reservation every week, so there was never a strong enough pull for them to switch browsers. If acting on your behalf only pays off at the frequency of professional work, then this is not a mass feature. It is a work tool that happens to look like a browser.
-
-**They chose not to be your browser.** Most Polar users keep their existing browser as the daily driver and open Polar when they have something to automate. That is a real finding, and it does not describe a browser war. It describes people keeping a daily browser and a work robot side by side. If that pattern holds, the interesting question stops being which browser wins and becomes how many browsers a person is willing to run.
-
-**What it needs is not your data. It is your identity.** The reason Polar does not need a connector for every service is that it operates inside sessions you have already authenticated. That is elegant, and it is also the whole exposure. An agent working inside your logged-in state can do anything you can do, on every site you are signed into, for as long as the session lasts. The permission model available today is close to all or nothing. There is no obvious way to grant one site, for one task, for one hour.
-
-**The engine is not theirs to decide.** Polar is a Chromium fork, and so was Atlas, and so is almost everything in this category. They are desktop first. *(Speculation from here: I read this as a structural constraint rather than a preference. How much control an engine exposes, and on which devices, is decided by whoever owns the engine, not by the company building on top of it. If the action layer turns out to be the valuable half of the browser, that decision stops being a technical detail.)*
+**What it needs is not your data. It is your identity.** That is why Polar does not need a connector for every service: it works inside the sessions you have already authenticated. That is elegant, and that is also an entire exposure. An agent working inside your logged-in state can do anything you can do, on every website you are logged in, for as long as the session lasts. The current permission model is all-or-nothing. There is no obvious way to give access to one site, for one task, for one hour.
 
 ## What I think is actually happening
 
-The courtroom line from May 2025 was reported as bad news for Google. Read again a year later, it was describing something about browsers: a change in why people open one at all, which happened to show up first in a search volume number.
+The quote from May 2025 was bad news for Google back then. But read again a year later, it describes something about the browser: the shift in the reason why people open one. It happens to occur in the search volume metrics.
 
-Since then, three companies have answered it three different ways. One pulled the answers back into its own app and gave up on owning a browser. One shipped an assistant and a browser in the same keynote and let each take half. One started as an assistant and turned itself into a browser so it could act as its user. The strategies do not agree. The premise underneath them does. Searching and everything after searching are no longer the same product.
+Since then, three companies answered it in three different ways. One pulled the answers back into its own app and abandoned maintaining the browser. Another shipped an assistant and a browser in the same keynote and let each of them take its half. One began as an assistant and turned into a browser, becoming a surrogate for you. But the strategies are conflicting. The underlying premise remains the same: searching and everything that happens after the search are not the same product anymore.
 
-The browser was never the destination. It was the place where the web became yours: where you logged in, where your things were kept, where anything actually got done. Search was a tenant, and a portable one. It has moved out.
-
-What is left is not a smaller product. It is the half that was always doing the heavier work, finally being looked at on its own.
+The browser was not the destination. It was the place where the web became truly yours: where you log in, where your stuff is, where things really get done. Search was just a tenant that moved out. What remains is not a less-valuable product. It is the half that was always doing the heavier work, finally being looked at on its own.
 
 ---
 
