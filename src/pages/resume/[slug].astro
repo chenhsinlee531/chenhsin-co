@@ -7,7 +7,18 @@
 import { getEntry } from 'astro:content';
 import Post from '../noises-of-ai/[slug].astro';
 
+// Short aliases for articles whose slug is awkward to print on a resume. They
+// redirect to the full tracking path, so both spellings count as one row.
+const ALIASES: Record<string, string> = {
+  'meeting-ai': 'designing-ai-assistant-meeting-follow-up',
+  delegation: 'designing-delegation-six-step-framework',
+};
+
 const { slug } = Astro.params;
+const aliased = ALIASES[slug as string];
+
+if (aliased) return Astro.redirect(`/resume/${aliased}`);
+
 const entry = await getEntry('blog', slug as string);
 
 if (!entry) return Astro.redirect('/noises-of-ai');
