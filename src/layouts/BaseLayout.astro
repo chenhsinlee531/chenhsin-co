@@ -17,7 +17,14 @@ const {
 } = Astro.props;
 
 const siteUrl = Astro.site ?? new URL('https://chenhsin.co');
-const canonicalURL = new URL(Astro.url.pathname, siteUrl).href;
+
+// Paths that exist only to count where a link was shared. They serve another
+// page's content, so they point search engines back at the real URL.
+const TRACKING_PATHS = new Set(['/resume']);
+const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
+const isTrackingPath = TRACKING_PATHS.has(currentPath);
+
+const canonicalURL = new URL(isTrackingPath ? '/' : Astro.url.pathname, siteUrl).href;
 const ogImageURL = new URL(image, siteUrl).href;
 ---
 
@@ -29,6 +36,7 @@ const ogImageURL = new URL(image, siteUrl).href;
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalURL} />
+    {isTrackingPath && <meta name="robots" content="noindex" />}
     <link rel="icon" href="/favicon.ico" />
 
     <!-- Open Graph -->
