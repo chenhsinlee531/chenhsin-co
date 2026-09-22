@@ -1,11 +1,11 @@
 ---
 // The URL printed on the resume. It serves the homepage under its own path, so
 // Vercel Analytics counts resume clicks as a separate row in the Pages panel.
-// Rendering the homepage component here (rather than Astro.rewrite) is what
-// keeps the path distinct: the analytics script reads the path Astro rendered,
-// and a rewrite reports the destination, not the URL the visitor opened.
 // BaseLayout points the canonical tag at / and marks this path noindex.
-import Home from './index.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import HomeContent from '../components/Home/HomeContent.astro';
 ---
 
-<Home />
+<BaseLayout title="ChenHsin Lee — PM who grows tools for thought">
+  <HomeContent />
+</BaseLayout>

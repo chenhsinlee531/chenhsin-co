@@ -1,11 +1,10 @@
 ---
 // Resume links that point at one article: chenhsin.co/resume/ai-judgment.
 // Same idea as /resume, one row per article in the Analytics Pages panel.
-// The article page reads Astro.params.slug, which this route also provides,
-// so rendering it here serves the post under the tracking path.
 // BaseLayout points the canonical tag at the real article URL.
 import { getEntry } from 'astro:content';
-import Post from '../noises-of-ai/[slug].astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostArticle from '../../components/Blog/PostArticle.astro';
 
 // Short aliases for articles whose slug is awkward to print on a resume. They
 // redirect to the full tracking path, so both spellings count as one row.
@@ -22,6 +21,10 @@ if (aliased) return Astro.redirect(`/resume/${aliased}`);
 const entry = await getEntry('blog', slug as string);
 
 if (!entry) return Astro.redirect('/noises-of-ai');
+
+const { title, excerpt } = entry.data;
 ---
 
-<Post />
+<BaseLayout title={`${title} — Noises of AI`} description={excerpt}>
+  <PostArticle entry={entry} />
+</BaseLayout>
