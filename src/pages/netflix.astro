@@ -1,0 +1,12 @@
+---
+// The URL sent with the Netflix application. It serves the Work page under its
+// own path, so Analytics counts those visits as their own row in the Pages
+// panel. BaseLayout points the canonical tag at /portfolio and marks it
+// noindex. One file per company: copy this for the next application.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PortfolioIndex from '../components/Portfolio/PortfolioIndex.astro';
+---
+
+<BaseLayout title="Work — ChenHsin Lee" description="Selected work and AI experiments around discovery, trust, creativity, and judgment.">
+  <PortfolioIndex />
+</BaseLayout>

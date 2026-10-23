@@ -18,17 +18,21 @@ const {
 
 const siteUrl = Astro.site ?? new URL('https://chenhsin.co');
 
-// Tracking paths exist only to count where a link was shared: /resume serves
-// the homepage, /resume/<slug> serves that article. They duplicate a real page,
-// so they point search engines back at it and stay out of the index.
+// Tracking paths exist only to count where a link was shared: each serves a
+// real page under its own URL, so it duplicates that page. They point search
+// engines back at the real page and stay out of the index.
+const TRACKING_PATHS: Record<string, string> = {
+  '/resume': '/',
+  '/netflix': '/portfolio',
+};
+
 const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
 
 const trackedPath =
-  currentPath === '/resume'
-    ? '/'
-    : currentPath.startsWith('/resume/')
-      ? `/noises-of-ai/${currentPath.slice('/resume/'.length)}`
-      : null;
+  TRACKING_PATHS[currentPath] ??
+  (currentPath.startsWith('/resume/')
+    ? `/noises-of-ai/${currentPath.slice('/resume/'.length)}`
+    : null);
 
 const canonicalURL = new URL(trackedPath ?? Astro.url.pathname, siteUrl).href;
 const ogImageURL = new URL(image, siteUrl).href;
