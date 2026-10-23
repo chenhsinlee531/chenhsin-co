@@ -1,5 +1,6 @@
 ---
 import Analytics from '@vercel/analytics/astro';
+import { isTrackingPath, realPath } from '../lib/tracking-paths';
 import Header from '../components/Layout/Header.astro';
 import Footer from '../components/Layout/Footer.astro';
 import '../styles/theme.css';
@@ -18,23 +19,10 @@ const {
 
 const siteUrl = Astro.site ?? new URL('https://chenhsin.co');
 
-// Tracking paths exist only to count where a link was shared: each serves a
-// real page under its own URL, so it duplicates that page. They point search
-// engines back at the real page and stay out of the index.
-const TRACKING_PATHS: Record<string, string> = {
-  '/resume': '/',
-  '/netflix': '/portfolio',
-};
-
-const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
-
-const trackedPath =
-  TRACKING_PATHS[currentPath] ??
-  (currentPath.startsWith('/resume/')
-    ? `/noises-of-ai/${currentPath.slice('/resume/'.length)}`
-    : null);
-
-const canonicalURL = new URL(trackedPath ?? Astro.url.pathname, siteUrl).href;
+// A tracking path duplicates the page it serves, so it points search engines
+// back at that page and stays out of the index.
+const tracked = isTrackingPath(Astro.url.pathname);
+const canonicalURL = new URL(realPath(Astro.url.pathname), siteUrl).href;
 const ogImageURL = new URL(image, siteUrl).href;
 ---
 
@@ -46,7 +34,7 @@ const ogImageURL = new URL(image, siteUrl).href;
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalURL} />
-    {trackedPath && <meta name="robots" content="noindex" />}
+    {tracked && <meta name="robots" content="noindex" />}
     <link rel="icon" href="/favicon.ico" />
 
     <!-- Open Graph -->

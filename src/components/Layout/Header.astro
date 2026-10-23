@@ -1,10 +1,14 @@
 ---
+import { realPath } from '../../lib/tracking-paths';
+
 const nav = [
   { label: 'Work', href: '/portfolio' },
   { label: 'Noises of AI', href: '/noises-of-ai' },
 ];
 
-const currentPath = Astro.url.pathname;
+// Resolved, so a tracking path such as /netflix lights up the same nav item
+// and wears the same header as the page it serves.
+const currentPath = realPath(Astro.url.pathname);
 
 // The homepage hero is full-bleed dark, so the header rides on top of it
 // transparently and only takes on its own background once you scroll past.
