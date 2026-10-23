@@ -1,0 +1,11 @@
+---
+// The homepage link in the LinkedIn featured section. Serves the homepage
+// under its own path, so those visits get their own row in Analytics.
+// BaseLayout points the canonical tag at / and marks this path noindex.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import HomeContent from '../components/Home/HomeContent.astro';
+---
+
+<BaseLayout title="ChenHsin Lee — PM who grows tools for thought">
+  <HomeContent />
+</BaseLayout>

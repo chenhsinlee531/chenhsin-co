@@ -5,16 +5,10 @@
 import { getEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PostArticle from '../../components/Blog/PostArticle.astro';
-
-// Short aliases for articles whose slug is awkward to print on a resume. They
-// redirect to the full tracking path, so both spellings count as one row.
-const ALIASES: Record<string, string> = {
-  'meeting-ai': 'designing-ai-assistant-meeting-follow-up',
-  delegation: 'designing-delegation-six-step-framework',
-};
+import { ARTICLE_ALIASES } from '../../lib/tracking-paths';
 
 const { slug } = Astro.params;
-const aliased = ALIASES[slug as string];
+const aliased = ARTICLE_ALIASES[slug as string];
 
 if (aliased) return Astro.redirect(`/resume/${aliased}`);
 

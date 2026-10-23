@@ -1,0 +1,23 @@
+---
+// Article links in the LinkedIn featured section: /linkedin/<slug>. Same idea
+// as /resume/<slug>, counted under its own row in the Analytics Pages panel.
+import { getEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostArticle from '../../components/Blog/PostArticle.astro';
+import { ARTICLE_ALIASES } from '../../lib/tracking-paths';
+
+const { slug } = Astro.params;
+const aliased = ARTICLE_ALIASES[slug as string];
+
+if (aliased) return Astro.redirect(`/linkedin/${aliased}`);
+
+const entry = await getEntry('blog', slug as string);
+
+if (!entry) return Astro.redirect('/noises-of-ai');
+
+const { title, excerpt } = entry.data;
+---
+
+<BaseLayout title={`${title} — Noises of AI`} description={excerpt}>
+  <PostArticle entry={entry} />
+</BaseLayout>
